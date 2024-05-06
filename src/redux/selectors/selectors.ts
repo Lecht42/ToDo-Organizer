@@ -1,5 +1,5 @@
-import { GoalList } from "../../interfaces";
+import { IGoalList } from "../../interfaces";
 import { RootState } from "../store";
 
 
-export const getGoals = (state: RootState): GoalList[] => state.goals.goalLists;
+export const getGoals = (state: RootState): IGoalList[] => state.goals.goalLists;

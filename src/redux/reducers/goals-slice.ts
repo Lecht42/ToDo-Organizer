@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { GoalList } from "../../interfaces";
+import { IGoalList } from "../../interfaces";
 
 const usersSlice = createSlice({
   name: "goals",
@@ -12,6 +12,7 @@ const usersSlice = createSlice({
           { id: 37929, label: "Complete the project", completed: true },
           { id: 76626, label: "Practice piano", completed: false },
         ],
+        label: "test1 fadfs"
       },
       {
         id: 5274,
@@ -21,6 +22,7 @@ const usersSlice = createSlice({
           { id: 89493, label: "Cook a new dish", completed: true },
           { id: 99429, label: "Complete the project", completed: false },
         ],
+        label: "test2",
       },
       {
         id: 6043,
@@ -30,8 +32,9 @@ const usersSlice = createSlice({
           { id: 69827, label: "Read a book", completed: true },
           { id: 68633, label: "Plan the holiday", completed: false },
         ],
+        label: "test3",
       },
-    ] as GoalList[],
+    ] as IGoalList[],
   },
   reducers: {
     addGoalList: (state, action) => {
@@ -48,7 +51,7 @@ const usersSlice = createSlice({
 
     addGoal: (state, action) => {
       const list = state.goalLists.find(
-        (list) => list.id === action.payload.listId
+        (e) => e.id === action.payload.listId
       );
       if (list) {
         list.items.push({
@@ -58,7 +61,27 @@ const usersSlice = createSlice({
         });
       }
     },
+    removeGoal: (state, action) => {
+      const list = state.goalLists.find(
+        (e) => e.id === action.payload.listId
+      );
+      if (list) {
+         list.items = list.items.filter((e) => action.payload.id !== e.id);
+      }
+    },
+    flickGoal: (state, action) => {
+      console.log(action.payload.listId)
+      const list = state.goalLists.find(
+        (e) => e.id === action.payload.listId
+      );
+      if (list) {
+        const item = list.items.find((e) => action.payload.id === e.id);
+        item!.completed = !item?.completed;
+      }
+    }
   },
 });
+
+export const {addGoalList, deleteGoalList, clearGoalList, removeGoal, addGoal, flickGoal} = usersSlice.actions;
 
 export default usersSlice.reducer;

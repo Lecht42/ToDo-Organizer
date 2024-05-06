@@ -1,11 +1,11 @@
-export interface Goal {
+export interface IGoal {
     id: number;
     label : string;
     completed : boolean;
 }
 
-export interface GoalList {
+export interface IGoalList {
     id: number;
-    items: Goal[];
+    items: IGoal[];
     label: string;
 }
