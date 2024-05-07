@@ -8,7 +8,7 @@ interface GoalProps extends IGoal {
 
 const Goal: React.FC<GoalProps> = ({ id, label, completed, onClick }) => {
   return (
-    <IonItem button onClick={onClick} detail={false} style={{ position: 'relative', display: 'block', width: '100%' }}>
+    <IonItem button onClick={onClick} detail={false} >
       <IonLabel>
         <span className={completed ? "completed" : "not-completed"}>{label}</span>
       </IonLabel>

@@ -1,27 +1,34 @@
-import { IonContent, IonLabel, IonList } from "@ionic/react";
-import { IGoal, IGoalList } from "../../interfaces";
+import { IonList } from "@ionic/react";
 import "./Goals.css";
 import Goal from "./goal/Goal";
 import { useAppDispatch } from "../../redux/hooks";
-import { flickGoal } from "../../redux/reducers/goals-slice";
+import { toggleGoalCompletion } from "../../redux/reducers/goals-slice";
+import { IGoalList } from "../../interfaces";
 
 interface GoalsProps extends IGoalList {
+  id: number; 
 }
 
 const Goals: React.FC<GoalsProps> = ({ id, label, items }) => {
   const dispatch = useAppDispatch();
-  const onGoalClickHandler = (listId: number, id: number) =>
-    dispatch(flickGoal({ listId, id }));
+
+  const onGoalClick = (goalId: number) => () => {
+    dispatch(toggleGoalCompletion({ listId: id, id: goalId })); 
+  };
 
   return (
-    <div className="container">
-      <h2>{label}</h2>
+    <IonContainer className="container">
+      <h1>{label}</h1>
       <IonList inset>
-        {items.map((e) => (
-          <Goal {...e} onClick={() => onGoalClickHandler(id, e.id)} key={e.id} />
-        ))}
+        {items.length > 0 ? (
+          items.map((e) => (
+            <Goal {...e} onClick={onGoalClick(e.id!)} key={e.id} />
+          ))
+        ) : (
+          <h2>No goals available.</h2>
+        )}
       </IonList>
-    </div>
+    </IonContainer>
   );
 };
 
