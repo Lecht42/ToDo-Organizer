@@ -70,7 +70,6 @@ const usersSlice = createSlice({
       }
     },
     flickGoal: (state, action) => {
-      console.log(action.payload.listId)
       const list = state.goalLists.find(
         (e) => e.id === action.payload.listId
       );
