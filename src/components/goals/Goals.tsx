@@ -17,7 +17,7 @@ const Goals: React.FC<GoalsProps> = ({ id, label, items }) => {
   };
 
   return (
-    <IonCard color="secondary">
+    <IonCard color="primary">
       <IonCardHeader>
         <IonCardTitle>{label}</IonCardTitle>
       </IonCardHeader>
