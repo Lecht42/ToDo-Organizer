@@ -1,7 +1,4 @@
-import {
-  IonContent,
-  IonPage,
-} from "@ionic/react";
+import { IonContent, IonPage } from "@ionic/react";
 import "./Main.css";
 import Goals from "../components/goals/Goals";
 import { useAppSelector } from "../redux/hooks";
@@ -11,11 +8,9 @@ const MainTab: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent color={"light"} fullscreen>
-        {goals.map((e) => (
-          <Goals {...e} key={e.id} />
-        ))}
-      </IonContent>
+      {goals.filter(g => g.id !== undefined).map((e) => (
+        <Goals {...e} id={e.id as number} key={e.id as number} />
+      ))}
     </IonPage>
   );
 };

@@ -1,3 +1,5 @@
+import { Color } from "./types";
+
 export interface IGoal {
     id?: number;
     label : string;
@@ -9,5 +11,6 @@ export interface IGoal {
 export interface IGoalList {
     id?: number;
     items: IGoal[];
+    color?: Color;
     label: string;
 }
