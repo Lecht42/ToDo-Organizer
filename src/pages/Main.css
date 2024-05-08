@@ -1,3 +1,13 @@
-.container {
-    margin-inline: 26px;
+.content-container {
+  margin: 10px;
+}
+
+ion-header {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+ion-header > ion-toolbar {
+  display: flex;
+  justify-content: space-between;
 }

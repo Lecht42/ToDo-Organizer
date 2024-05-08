@@ -42,3 +42,7 @@
 .not-completed::after {
   animation: line-out 0.3s linear forwards;
 }
+
+ion-item > ion-label {
+  max-width: max-content;
+}

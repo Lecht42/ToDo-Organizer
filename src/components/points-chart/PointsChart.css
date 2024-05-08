@@ -1,0 +1,31 @@
+.chart-container {
+  justify-items: center;
+  position: relative;
+  width: 100%;
+  height: 30%; 
+  padding: 10px;
+}
+
+.points-counter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  z-index: 10;
+  font-style: italic;
+}
+
+.points-counter > * {
+   margin: 0;
+}
+
+.points-counter > h1 {
+  font-size: 5rem;
+  font-weight: bold;
+}
+
+.points-counter > h2 {
+  text-align: right;
+  font-size: 1.2rem;
+}

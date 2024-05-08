@@ -7,7 +7,7 @@ export interface PointsState {
 
 const initialState: PointsState = {
   points: 0,
-  lastChange: new Date(),
+  lastChange: new Date().toISOString(),
 };
 
 const pointsSlice = createSlice({
@@ -16,11 +16,11 @@ const pointsSlice = createSlice({
   reducers: {
     addPoints: (state, action: PayloadAction<number>) => {
       state.points += action.payload;
-      state.lastChange = new Date();
+      state.lastChange = new Date().toISOString();
     },
     clearPoints: (state) => {
       state.points = 0;
-      state.lastChange = new Date();
+      state.lastChange = new Date().toISOString();
     },
   },
 });
