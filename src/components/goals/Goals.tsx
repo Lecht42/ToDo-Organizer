@@ -8,15 +8,15 @@ import {
   IonLabel,
   IonList,
 } from "@ionic/react";
-import "./Goals.css";
-import Goal from "./goal/Goal";
+import "./goals.css";
 import { useAppDispatch } from "../../redux/hooks";
 import { toggleGoalCompletion } from "../../redux/reducers/goals-slice";
 import { IGoalList } from "../../interfaces";
 import { addPoints } from "../../redux/reducers/points-slice";
 import createChipText from "../../utils/functions/create-chip-text";
+import Goal from "./goal/goal";
 
-interface GoalsProps extends IGoalList {
+export interface GoalsProps extends IGoalList {
   id: number;
 }
 

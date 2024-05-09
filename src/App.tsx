@@ -1,8 +1,4 @@
-import {
-  IonApp,
-  setupIonicReact,
-} from "@ionic/react";
-import MainTab from "./pages/Main";
+import { IonApp, setupIonicReact } from "@ionic/react";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -24,12 +20,15 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import { Provider } from "react-redux";
 import { makeStore } from "./redux/store";
+import MainTab from "./pages/main/main";
+import Menu from "./pages/menu/menu";
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <Provider store={makeStore()}>
+      <Menu />
       <MainTab />
     </Provider>
   </IonApp>
