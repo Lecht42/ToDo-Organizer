@@ -8,7 +8,6 @@ import {
   IonPage,
   IonToolbar,
 } from "@ionic/react";
-import "./main.css";
 import { useAppSelector } from "../../redux/hooks";
 import { getGoals } from "../../redux/selectors/goals-selectors";
 import PointsChart from "../../components/points-chart/PointsChart";

@@ -11,9 +11,9 @@ const Goal: React.FC<GoalProps> = ({ label, points, completed, onClick }) => {
   return (
     <IonItem button onClick={onClick} detail={false}>
       <IonCheckbox checked={completed} labelPlacement="end" justify="start">
-        <h3>{label}</h3>
+        <h3 className={completed ? "completed" : "not-completed"}>{label}</h3>
       </IonCheckbox>
-      <IonChip disabled={completed} color="tertiary">
+      <IonChip disabled={!completed} color="tertiary">
         {createChipText(points)}
       </IonChip>
     </IonItem>  

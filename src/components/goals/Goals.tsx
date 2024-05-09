@@ -2,13 +2,11 @@ import {
   IonCard,
   IonCardContent,
   IonCardHeader,
-  IonCardSubtitle,
   IonCardTitle,
   IonChip,
   IonLabel,
   IonList,
 } from "@ionic/react";
-import "./goals.css";
 import { useAppDispatch } from "../../redux/hooks";
 import { toggleGoalCompletion } from "../../redux/reducers/goals-slice";
 import { IGoalList } from "../../interfaces";

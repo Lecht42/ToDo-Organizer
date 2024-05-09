@@ -18,10 +18,11 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import "./global.css";
 import { Provider } from "react-redux";
 import { makeStore } from "./redux/store";
-import MainTab from "./pages/main/main";
-import Menu from "./pages/menu/menu";
+import MainTab from "./pages/home/home";
+import Menu from "./components/menu/menu";
 
 setupIonicReact();
 

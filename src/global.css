@@ -1,0 +1,44 @@
+.completed,
+.not-completed {
+  display: inline-block;
+  position: relative;
+}
+
+.completed::after,
+.not-completed::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 1px;
+  background-color: black;
+  top: 50%;
+  left: 0;
+  z-index: 1;
+  opacity: 1;
+}
+
+@keyframes line-in {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes line-out {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.completed::after {
+  animation: line-in 0.3s linear forwards;
+}
+
+.not-completed::after {
+  animation: line-out 0.3s linear forwards;
+}
