@@ -1,7 +1,7 @@
 import { IonCheckbox, IonChip, IonItem, IonLabel } from "@ionic/react";
 import "./goal.css";
-import { IGoal } from "../../../interfaces";
 import createChipText from "../../../utils/functions/create-chip-text";
+import { IGoal } from "../../../utils/interfaces/goals";
 
 interface GoalProps extends IGoal {
   onClick: () => void;

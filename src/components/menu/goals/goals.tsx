@@ -12,7 +12,7 @@ import { GoalsProps } from "../../goals/goals";
 import CreateTaskModal from "../modals/create-task/create-task";
 
 const MenuGoals: React.FC<GoalsProps> = ({ id, label, items }) => {
-  const createModalId = `create-modal-for-list-${String(id)}`;
+  const createModalId = id
 
   return (
     <>

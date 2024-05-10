@@ -1,9 +1,8 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IGoalList } from "../../interfaces";
+import { IGoal, IGoalList } from "../../utils/interfaces/goals";
 
-export interface IAddGoalPayload {
+export interface IAddGoalPayload extends IGoal {
   listId: number;
-  label: string;
 }
 
 export interface IGoalOperationPayload {
@@ -15,6 +14,7 @@ const initialState: { goalLists: IGoalList[] } = {
   goalLists: [
     {
       id: 2412,
+      points: 100,
       items: [
         {
           id: 73220,
@@ -42,6 +42,7 @@ const initialState: { goalLists: IGoalList[] } = {
     },
     {
       id: 5274,
+      points: 100,
       items: [
         {
           id: 36974,
@@ -76,6 +77,7 @@ const initialState: { goalLists: IGoalList[] } = {
     },
     {
       id: 6043,
+      points: 100,
       items: [
         {
           id: 57849,

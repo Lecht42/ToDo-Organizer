@@ -2,7 +2,7 @@ import {
   IonItem,
   IonLabel,
 } from "@ionic/react";
-import { IGoal } from "../../../../interfaces";
+import { IGoal } from "../../../../utils/interfaces/goals";
 
 interface MenuGoalProps extends IGoal {}
 

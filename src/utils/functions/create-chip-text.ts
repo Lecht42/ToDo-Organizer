@@ -1,3 +1,5 @@
+export const DEFAULT_POINTS_SYMBOL = "￠"; 
+
 const createChipText = (
   points: number,
   operation: string = "+",
