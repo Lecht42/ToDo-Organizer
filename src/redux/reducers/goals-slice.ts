@@ -138,8 +138,8 @@ const goalsSlice = createSlice({
           id: Date.now(), 
           label: action.payload.label,
           completed: false,
-          points: 0,
-          deadline: new Date().toISOString(),
+          points: action.payload.points,
+          deadline: action.payload.deadline,
         });
       }
     },
