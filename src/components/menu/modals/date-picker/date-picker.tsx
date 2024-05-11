@@ -3,19 +3,20 @@ import getMaxDate from "../../../../utils/functions/get-max-date";
 import moment from "moment";
 
 interface DatePickerModalProps {
-  curDate: string
+  curDate: moment.Moment;
+  onConfirm: (date: moment.Moment) => void;
 }
 
-const DatePickerModal: React.FC<DatePickerModalProps> = ({curDate}) => {
+const DatePickerModal: React.FC<DatePickerModalProps> = ({ curDate, onConfirm }) => {
   return (
-    <IonModal  keepContentsMounted={true}>
+    <IonModal keepContentsMounted={true}>
       <IonDatetime
-        preferWheel
         display-format="DD/MM/YYYY"
-        min={curDate}
+        min={moment().toISOString()}
         max={getMaxDate()}
         presentation="date"
         id="datetime"
+        onIonChange={(event) => onConfirm(moment(event.detail.value))}
       ></IonDatetime>
     </IonModal>
   );

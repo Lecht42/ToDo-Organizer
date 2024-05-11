@@ -19,7 +19,7 @@ import {
   IAddGoalPayload,
   addGoal,
 } from "../../../../redux/reducers/goals-slice";
-import getTodayISODate from "../../../../utils/functions/get-today-iso-date";
+import moment, { Moment } from "moment";
 
 interface CreateTaskModalProps {
   listId: number;
@@ -27,14 +27,15 @@ interface CreateTaskModalProps {
 
 const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
   const modal = useRef<HTMLIonModalElement>(null);
-  const inputRef = useRef<HTMLIonInputElement>(null); 
+  const inputRef = useRef<HTMLIonInputElement>(null);
   const dispatch = useAppDispatch();
-  const [formData, setFormData] = useState<IAddGoalPayload>({
-    listId,
+  const initState = {
+    attachedListId: listId,
     label: "",
     points: 5,
-    deadline: getTodayISODate(),
-  });
+    deadline: moment().toISOString(),
+  };
+  const [formData, setFormData] = useState<IAddGoalPayload>(initState);
 
   useEffect(() => {
     if (modal.current && inputRef.current) {
@@ -45,7 +46,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
 
   const handleOnConfirm = () => {
     dispatch(addGoal(formData));
-    modal.current?.dismiss();
+    modal.current?.dismiss().then(() => setFormData(initState));
   };
 
   const handleOnConfirmSubmodal = (
@@ -53,6 +54,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
     points?: number,
     deadline?: string
   ) => {
+    console.log(label);
     setFormData((prev) => ({
       ...prev,
       label: label || prev.label,
@@ -92,17 +94,33 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
         <IonItem>
           <IonLabel>Date</IonLabel>
           <IonDatetimeButton slot="end" datetime="datetime"></IonDatetimeButton>
-          <DatePickerModal curDate={formData.deadline} />
+          <DatePickerModal
+            onConfirm={(date: moment.Moment) =>
+              handleOnConfirmSubmodal(undefined, undefined, date.toISOString())
+            }
+            curDate={moment(formData.deadline)}
+          />
         </IonItem>
       </IonList>
       <h1 className="ion-padding ion-text-center">
         <IonInput
           placeholder="Type here..."
           value={formData.label}
+          maxlength={18}
+          onIonInput={(event) =>
+            handleOnConfirmSubmodal(event.detail.value as string)
+          }
           ref={inputRef}
         ></IonInput>
       </h1>
-      <IonButton onClick={handleOnConfirm}>Confirm</IonButton>
+      <IonButton
+        className="ion-margin"
+        size="large"
+        shape="round"
+        onClick={handleOnConfirm}
+      >
+        Confirm
+      </IonButton>
     </IonModal>
   );
 };

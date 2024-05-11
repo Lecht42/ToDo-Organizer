@@ -12,8 +12,8 @@ import { useAppDispatch } from "../../redux/hooks";
 import { toggleGoalCompletion } from "../../redux/reducers/goals-slice";
 import { addPoints } from "../../redux/reducers/points-slice";
 import createChipText from "../../utils/functions/create-chip-text";
-import Goal from "./goal/goal";
 import { IGoalList } from "../../utils/interfaces/goals";
+import Goal from "./goal/goal";
 
 export interface GoalsProps extends IGoalList {
   id: number;

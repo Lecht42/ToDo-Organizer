@@ -50,10 +50,6 @@ const goalsSlice = createSlice({
           completed: false,
           points: action.payload.points,
           deadline: action.payload.deadline,
-          period: {
-            days: 0,
-            name: ""
-          } 
         });
       }
     },

@@ -51,7 +51,7 @@ const AwardPickerModal: React.FC<AwardPickerModalProps> = ({
           <div slot="suffix">{DEFAULT_POINTS_SYMBOL}</div>
         </IonPickerColumn>
       </IonPicker>
-      <IonButton onClick={onConfirmHandler}>Confirm</IonButton>
+      <IonButton className="ion-margin" size="large" shape="round" onClick={onConfirmHandler}>Confirm</IonButton>
     </IonModal>
   );
 };
