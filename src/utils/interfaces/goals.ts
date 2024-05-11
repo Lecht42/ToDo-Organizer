@@ -4,6 +4,7 @@ export interface IGoal {
   points: number;
   deadline: string;
   completed?: boolean;
+  attachedListId?: number;
 }
 
 export interface IGoalList {
@@ -11,4 +12,5 @@ export interface IGoalList {
   label: string;
   points: number;
   items: IGoal[];
+  completed?: boolean;
 }

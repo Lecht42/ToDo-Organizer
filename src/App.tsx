@@ -21,7 +21,7 @@ import "./theme/variables.css";
 import "./global.css";
 import { Provider } from "react-redux";
 import { makeStore } from "./redux/store";
-import MainTab from "./pages/home/home";
+import HomeTab from "./pages/home/home";
 import Menu from "./components/menu/menu";
 
 setupIonicReact();
@@ -30,7 +30,7 @@ const App: React.FC = () => (
   <IonApp>
     <Provider store={makeStore()}>
       <Menu />
-      <MainTab />
+      <HomeTab />
     </Provider>
   </IonApp>
 );

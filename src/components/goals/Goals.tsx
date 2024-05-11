@@ -1,3 +1,4 @@
+import React from "react";
 import {
   IonCard,
   IonCardContent,
@@ -16,28 +17,37 @@ import { IGoalList } from "../../utils/interfaces/goals";
 
 export interface GoalsProps extends IGoalList {
   id: number;
+  color?: string;
 }
 
-const Goals: React.FC<GoalsProps> = ({ id, label, items }) => {
+const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
   const dispatch = useAppDispatch();
 
-  const onGoalClick = (goalId: number, points: number) => () => {
-    dispatch(toggleGoalCompletion({ listId: id, id: goalId }));
-    dispatch(addPoints(points));
+  const onGoalClickHandler = (
+    goalId: number,
+    points: number,
+    attachedListId?: number
+  ) => {
+    return () => {
+      dispatch(
+        toggleGoalCompletion({ listId: attachedListId || id, id: goalId })
+      );
+      dispatch(addPoints(points));
+    };
   };
 
+  console.log(items);
+
   return (
-    <IonCard color="primary">
+    <IonCard color={color || "secondary"}>
       <IonCardHeader>
         <IonCardTitle>
           <IonLabel>{label}</IonLabel>
-          <IonChip color="warning">
-            {createChipText(
-              items.reduce(
-                (acc, value) => (value.completed ? acc : (acc += value.points)),
-                0
-              )
-            )}
+          <IonChip
+            disabled={Boolean(items.filter((e) => !e.completed).length)}
+            color="warning"
+          >
+            {createChipText(points)}
           </IonChip>
         </IonCardTitle>
       </IonCardHeader>
@@ -47,9 +57,10 @@ const Goals: React.FC<GoalsProps> = ({ id, label, items }) => {
             items.map((e) => (
               <Goal
                 {...e}
-                onClick={onGoalClick(
+                onClick={onGoalClickHandler(
                   e.id as number,
-                  e.completed ? -e.points : e.points
+                  e.completed ? -e.points : e.points,
+                  e.attachedListId
                 )}
                 key={e.id}
               />

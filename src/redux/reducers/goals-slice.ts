@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IGoal, IGoalList } from "../../utils/interfaces/goals";
+import moment from "moment";
 
-export interface IAddGoalPayload extends IGoal {
-  listId: number;
+export interface IAddGoalPayload extends Omit<IGoal, "deadline"> {
+  attachedListId: number;
+  deadline: string
 }
 
 export interface IGoalOperationPayload {
@@ -15,100 +17,8 @@ const initialState: { goalLists: IGoalList[] } = {
     {
       id: 2412,
       points: 100,
-      items: [
-        {
-          id: 73220,
-          label: "Complete the project",
-          completed: false,
-          points: 100,
-          deadline: new Date().toISOString(),
-        },
-        {
-          id: 37929,
-          label: "Complete the project",
-          completed: true,
-          points: 20,
-          deadline: new Date().toISOString(),
-        },
-        {
-          id: 76626,
-          label: "Practice piano",
-          completed: false,
-          points: 0,
-          deadline: new Date().toISOString(),
-        },
-      ],
-      label: "test1 fadfs",
-    },
-    {
-      id: 5274,
-      points: 100,
-      items: [
-        {
-          id: 36974,
-          label: "Clean the house",
-          completed: false,
-          points: 0,
-          deadline: new Date().toISOString(),
-        },
-        {
-          id: 56547,
-          label: "Finish the homework",
-          completed: false,
-          points: 0,
-          deadline: new Date().toISOString(),
-        },
-        {
-          id: 89493,
-          label: "Cook a new dish",
-          completed: true,
-          points: 0,
-          deadline: new Date().toISOString(),
-        },
-        {
-          id: 99429,
-          label: "Complete the project",
-          completed: false,
-          points: 0,
-          deadline: new Date().toISOString(),
-        },
-      ],
-      label: "test2",
-    },
-    {
-      id: 6043,
-      points: 100,
-      items: [
-        {
-          id: 57849,
-          label: "Read a book",
-          completed: true,
-          points: 0,
-          deadline: new Date().toISOString(),
-        },
-        {
-          id: 99892,
-          label: "Cook a new dish",
-          completed: true,
-          points: 0,
-          deadline: new Date().toISOString(),
-        },
-        {
-          id: 69827,
-          label: "Read a book",
-          completed: true,
-          points: 0,
-          deadline: new Date().toISOString(),
-        },
-        {
-          id: 68633,
-          label: "Plan the holiday",
-          completed: false,
-          points: 0,
-          deadline: new Date().toISOString(),
-        },
-      ],
-      label: "test3",
+      items: [],
+      label: "test",
     },
   ],
 };
@@ -131,15 +41,19 @@ const goalsSlice = createSlice({
 
     addGoal: (state, action: PayloadAction<IAddGoalPayload>) => {
       const list = state.goalLists.find(
-        (list) => list.id === action.payload.listId
+        (list) => list.id === action.payload.attachedListId
       );
       if (list) {
         list.items.push({
-          id: Date.now(), 
+          id: Date.now(),
           label: action.payload.label,
           completed: false,
           points: action.payload.points,
           deadline: action.payload.deadline,
+          period: {
+            days: 0,
+            name: ""
+          } 
         });
       }
     },

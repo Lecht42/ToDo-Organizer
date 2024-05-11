@@ -41,7 +41,7 @@ const AwardPickerModal: React.FC<AwardPickerModalProps> = ({
       keepContentsMounted
     >
       <IonPicker onIonChange={onChangeHandler}> 
-        <IonPickerColumn>
+        <IonPickerColumn value={value}>
           <div slot="prefix">+</div>
           {Array.from(Array(MAX_AWARD_PICKED_VALUE).keys()).map((i) => (
             <IonPickerColumnOption key={i} value={i + 1}>

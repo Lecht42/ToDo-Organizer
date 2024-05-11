@@ -16,7 +16,7 @@ const Goal: React.FC<GoalProps> = ({ label, points, completed, onClick }) => {
       <IonChip disabled={!completed} color="tertiary">
         {createChipText(points)}
       </IonChip>
-    </IonItem>  
+    </IonItem>
   );
 };
 

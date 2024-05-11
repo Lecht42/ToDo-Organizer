@@ -7,3 +7,6 @@ const getIonicColor = (colorName: string) => {
 };
 
 export default getIonicColor;
+
+export const PRIMARY_COLOR = getIonicColor("primary"),
+  LIGHT_COLOR = getIonicColor("light");

@@ -1,8 +1,6 @@
-import {
-  IonDatetime,
-  IonModal,
-} from "@ionic/react";
+import { IonDatetime, IonModal } from "@ionic/react";
 import getMaxDate from "../../../../utils/functions/get-max-date";
+import moment from "moment";
 
 interface DatePickerModalProps {
   curDate: string
@@ -10,7 +8,7 @@ interface DatePickerModalProps {
 
 const DatePickerModal: React.FC<DatePickerModalProps> = ({curDate}) => {
   return (
-    <IonModal keepContentsMounted={true}>
+    <IonModal  keepContentsMounted={true}>
       <IonDatetime
         preferWheel
         display-format="DD/MM/YYYY"
