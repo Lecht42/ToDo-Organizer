@@ -12,14 +12,12 @@ import { GoalsProps } from "../../goals/goals";
 import CreateTaskModal from "../modals/create-task/create-task";
 
 const MenuGoals: React.FC<GoalsProps> = ({ id, label, items }) => {
-  const createModalId = id
-
   return (
     <>
       <IonList>
         <IonListHeader>
           <IonLabel>{label}</IonLabel>
-          <IonButton id={createModalId} expand="block" size="large">
+          <IonButton id={String(id)} expand="block" size="large">
             <IonIcon icon={add} />
           </IonButton>
         </IonListHeader>
@@ -27,7 +25,7 @@ const MenuGoals: React.FC<GoalsProps> = ({ id, label, items }) => {
           <MenuGoal {...e} key={e.id} />
         ))}
       </IonList>
-      <CreateTaskModal listId={createModalId} />
+      <CreateTaskModal listId={id} />
     </>
   );
 };

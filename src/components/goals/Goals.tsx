@@ -36,38 +36,36 @@ const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
     };
   };
 
-  console.log(items);
+  if (!items.length) return <></>;
 
   return (
     <IonCard color={color || "secondary"}>
       <IonCardHeader>
         <IonCardTitle>
           <IonLabel>{label}</IonLabel>
-          <IonChip
-            disabled={Boolean(items.filter((e) => !e.completed).length)}
-            color="warning"
-          >
-            {createChipText(points)}
-          </IonChip>
+          {points && (
+            <IonChip
+              disabled={Boolean(items.filter((e) => !e.completed).length)}
+              color="warning"
+            >
+              {createChipText(points)}
+            </IonChip>
+          )} 
         </IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
         <IonList>
-          {items.length > 0 ? (
-            items.map((e) => (
-              <Goal
-                {...e}
-                onClick={onGoalClickHandler(
-                  e.id as number,
-                  e.completed ? -e.points : e.points,
-                  e.attachedListId
-                )}
-                key={e.id}
-              />
-            ))
-          ) : (
-            <h2>No goals available.</h2>
-          )}
+          {items.map((e) => (
+            <Goal
+              {...e}
+              onClick={onGoalClickHandler(
+                e.id as number,
+                e.completed ? -e.points : e.points,
+                e.attachedListId
+              )}
+              key={e.id}
+            />
+          ))}
         </IonList>
       </IonCardContent>
     </IonCard>

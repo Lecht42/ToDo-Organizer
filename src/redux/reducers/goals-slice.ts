@@ -4,7 +4,7 @@ import moment from "moment";
 
 export interface IAddGoalPayload extends Omit<IGoal, "deadline"> {
   attachedListId: number;
-  deadline: string
+  deadline: string;
 }
 
 export interface IGoalOperationPayload {
@@ -12,15 +12,8 @@ export interface IGoalOperationPayload {
   id?: number;
 }
 
-const initialState: { goalLists: IGoalList[] } = {
-  goalLists: [
-    {
-      id: 2412,
-      points: 100,
-      items: [],
-      label: "test",
-    },
-  ],
+ const initialState: { goalLists: IGoalList[] } = {
+  goalLists: [],
 };
 
 const goalsSlice = createSlice({
@@ -28,7 +21,11 @@ const goalsSlice = createSlice({
   initialState,
   reducers: {
     addGoalList: (state, action: PayloadAction<IGoalList>) => {
-      state.goalLists.push(action.payload);
+      state.goalLists.push({
+        ...action.payload,
+        id: Date.now(),
+        completed: false,
+      });
     },
     deleteGoalList: (state, action: PayloadAction<number>) => {
       state.goalLists = state.goalLists.filter(

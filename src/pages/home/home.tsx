@@ -10,9 +10,9 @@ import {
 } from "@ionic/react";
 import { useAppSelector } from "../../redux/hooks";
 import { getGoals, getTodayGoals } from "../../redux/selectors/goals-selectors";
-import PointsChart from "../../components/points-chart/PointsChart";
+import GoalsIndicator from "../../components/goals-indicator/goals-indicator";
 import { menu } from "ionicons/icons";
-import { getPoints } from "../../redux/selectors/points-selectors";
+import { getDailyPoints, getPoints } from "../../redux/selectors/points-selectors";
 import createPointsText from "../../utils/functions/create-chip-text";
 import Goals from "../../components/goals/goals";
 import { IGoalList } from "../../utils/interfaces/goals";
@@ -26,8 +26,7 @@ const HomeTab: React.FC = () => {
   };
   const goals = useAppSelector(getGoals);
   const points = useAppSelector(getPoints);
-
-  console.log(todayGoals);
+  const dailyPoints = useAppSelector(getDailyPoints);
 
   return (
     <IonPage id="main-content">
@@ -43,17 +42,20 @@ const HomeTab: React.FC = () => {
       </IonHeader>
       <IonContent>
         <div className="ion-padding">
-          <PointsChart />
-          {todayGoals.items.length ? (
-            <Goals {...todayGoals} color="primary" id={todayGoals.id as number} />
-          ) : (
-            <></>
+          <GoalsIndicator />
+          {Boolean(todayGoals.items.length) && dailyPoints > 0 && (
+            <Goals
+              {...todayGoals}
+              color="primary"
+              id={todayGoals.id as number}
+            />
           )}
-          {goals
-            .filter((g) => g.id !== undefined)
-            .map((e) => (
-              <Goals {...e} id={e.id as number} key={e.id as number} />
-            ))}
+          {Boolean(goals.length) &&
+            goals
+              .filter((g) => g.id !== undefined)
+              .map((e) => (
+                <Goals {...e} id={e.id as number} key={e.id as number} />
+              ))}
         </div>
       </IonContent>
     </IonPage>

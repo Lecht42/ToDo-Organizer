@@ -10,6 +10,9 @@ import { useAppSelector } from "../../redux/hooks";
 import { getGoals } from "../../redux/selectors/goals-selectors";
 import { add } from "ionicons/icons";
 import MenuGoals from "./goals/goals";
+import CreateTaskListModal from "./modals/create-task-list/create-task-list";
+
+const CREATE_TASK_LIST_MODAL_ID = "create-new-task-list";
 
 const Menu: React.FC = () => {
   const goals = useAppSelector(getGoals);
@@ -17,10 +20,15 @@ const Menu: React.FC = () => {
   return (
     <IonMenu contentId="main-content">
       <IonContent>
-        <IonButton className="ion-margin">
+        <IonButton
+          id={CREATE_TASK_LIST_MODAL_ID}
+          fill="clear"
+          className="ion-margin"
+        >
           <IonIcon icon={add} />
           <IonLabel>Add new task group</IonLabel>
         </IonButton>
+        <CreateTaskListModal trigger={CREATE_TASK_LIST_MODAL_ID} />
         {goals
           .filter((e) => e.id !== undefined)
           .map((e) => (

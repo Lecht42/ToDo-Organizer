@@ -1,3 +1,5 @@
+import IPeriod from "./period";
+
 export interface IGoal {
   id?: number;
   label: string;
@@ -5,12 +7,12 @@ export interface IGoal {
   deadline: string;
   completed?: boolean;
   attachedListId?: number;
+  period?: IPeriod;
 }
 
 export interface IGoalList {
   id?: number;
   label: string;
-  points: number;
+  points?: number;
   items: IGoal[];
-  completed?: boolean;
 }

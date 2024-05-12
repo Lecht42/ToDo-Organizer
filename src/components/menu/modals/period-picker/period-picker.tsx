@@ -1,24 +1,92 @@
 import {
-  IonDatetime,
+  IonButton,
   IonModal,
+  IonPicker,
+  IonPickerColumn,
+  IonPickerColumnOption,
 } from "@ionic/react";
-import getMaxDate from "../../../../utils/functions/get-max-date";
-import getTodayISODate from "../../../../utils/functions/get-today-iso-date";
+import { useRef, useState, useEffect } from "react";
+import { IPeriod} from "../../../../utils/interfaces/period";
+import MomentRecurrenceOption from "../../../../utils/enums/moment-recurrence-option";
 
+export const PERIOD_PICKER_MODAL_TRIGGER = "open-period-picker";
 
-const DatePickerModal: React.FC = () => {
+interface PeriodPickerModalProps {
+  onClick: (period?: IPeriod) => void;
+  value?: IPeriod;
+}
+
+const PeriodPickerModal: React.FC<PeriodPickerModalProps> = ({
+  onClick,
+  value,
+}) => {
+  const modal = useRef<HTMLIonModalElement>(null);
+  const [periodType, setPeriodType] = useState<MomentRecurrenceOption | undefined>(value?.type);
+  const [periodValue, setPeriodValue] = useState<number | undefined>(value?.value);
+
+  useEffect(() => {
+    if (value) {
+      setPeriodType(value.type);
+      setPeriodValue(value.value);
+    } else {
+      setPeriodType(undefined);
+      setPeriodValue(undefined);
+    }
+  }, [value]);
+
+  const onConfirmHandler = () => {
+    if (periodType && periodValue !== undefined) {
+      onClick({ type: periodType, value: periodValue });
+    } else {
+      onClick(undefined);
+    }
+    modal.current?.dismiss();
+  };
+
+  const onChangeTypeHandler = (event: CustomEvent) => {
+    setPeriodType(event.detail.value as MomentRecurrenceOption);
+  };
+
+  const onChangeValueHandler = (event: CustomEvent) => {
+    setPeriodValue(parseInt(event.detail.value, 10));
+  };
+
+  const periodRecurrenceOptions: MomentRecurrenceOption[] = ["day", "week", "month"];
+
   return (
-    <IonModal keepContentsMounted={true}>
-      <IonDatetime
-        preferWheel
-        display-format="DD/MM/YYYY"
-        min={getTodayISODate()}
-        max={getMaxDate()}
-        presentation="date"
-        id="datetime"
-      ></IonDatetime>
+    <IonModal
+      id="period-picker-modal"
+      className="ion-padding"
+      trigger={PERIOD_PICKER_MODAL_TRIGGER}
+      ref={modal}
+      keepContentsMounted
+    >
+      <IonPicker>
+        <IonPickerColumn value={periodType} onIonChange={onChangeTypeHandler}>
+          {periodRecurrenceOptions.map((option, index) => (
+            <IonPickerColumnOption key={index} value={option}>
+              {option}
+            </IonPickerColumnOption>
+          ))}
+        </IonPickerColumn>
+        <IonPickerColumn value={periodValue?.toString()} onIonChange={onChangeValueHandler}>
+          {Array.from({ length: 3 }, (_, i) => i + 1).map((number, index) => (
+            <IonPickerColumnOption key={index} value={number.toString()}>
+              {number}
+            </IonPickerColumnOption>
+          ))}
+        </IonPickerColumn>
+      </IonPicker>
+      <IonButton
+        className="ion-margin"
+        size="large"
+        shape="round"
+        onClick={onConfirmHandler}
+      >
+        Confirm
+      </IonButton>
     </IonModal>
   );
 };
 
-export default DatePickerModal;
+export default PeriodPickerModal;
