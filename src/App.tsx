@@ -17,7 +17,8 @@ import { Provider } from "react-redux";
 import { makeStore } from "./redux/store";
 import HomeTab, { HOME_HREF } from "./pages/home/home";
 import Header from "./components/header/header";
-import SettingsTab, { SETTINGS_HREF } from "./pages/settings/settings";
+import SettingsTab, { SETTINGS_HREF } from "./components/menu/modals/settings/settings";
+import Menu from "./components/menu/menu";
 
 setupIonicReact();
 
@@ -25,13 +26,8 @@ const App: React.FC = () => (
   <IonApp>
     <Provider store={makeStore()}>
       <Header />
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route exact path="/" render={() => <Redirect to={HOME_HREF} />} />
-          <Route exact path={HOME_HREF} component={HomeTab} />
-          <Route exact path={SETTINGS_HREF} component={SettingsTab} />
-        </IonRouterOutlet>
-      </IonReactRouter>
+      <HomeTab />
+      <Menu />
     </Provider>
   </IonApp>
 );

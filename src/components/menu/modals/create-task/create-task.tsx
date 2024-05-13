@@ -28,10 +28,10 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
   const [formData, setFormData] = useState<IAddGoalPayload>(initialFormData(listId));
 
   useEffect(() => {
-    if (modal.current) {
-      modal.current.present();
-      inputRef.current?.setFocus();
-    }
+    // if (modal.current) {
+    //   modal.current.present();
+    //   inputRef.current?.setFocus();
+    // }
   }, []);
 
   const handleOnConfirm = useCallback(() => {

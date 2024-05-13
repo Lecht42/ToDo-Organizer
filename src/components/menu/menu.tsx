@@ -5,17 +5,16 @@ import { selectGoals } from "../../redux/selectors/goals-selectors";
 import { add, settingsOutline } from "ionicons/icons";
 import MenuGoals from "./menu-goals/menu-goals";
 import CreateTaskListModal from "./modals/create-task-list/create-task-list";
-import { useHistory } from "react-router-dom";
+import SettingsModal, { SETTINGS_MODAL_TRIGGER } from "./modals/settings/settings";
 
 const CREATE_TASK_LIST_MODAL_ID = "create-new-task-list";
 export const MENU_ID = "menu";
 
 const Menu: React.FC = () => {
-  const history = useHistory();
   const goals = useAppSelector(selectGoals);
 
   return (
-    <IonMenu contentId="main-content" side="start" menuId={MENU_ID}>  
+    <IonMenu contentId="main-content" side="start" menuId={MENU_ID}>
       <IonContent>
         <IonButton id={CREATE_TASK_LIST_MODAL_ID} fill="clear" className="ion-margin">
           <IonIcon icon={add} />
@@ -29,11 +28,13 @@ const Menu: React.FC = () => {
           ))}
       </IonContent>
       <IonFooter>
-          <IonButton expand="block" >
-            <IonIcon icon={settingsOutline} />
-            <IonLabel>Settings</IonLabel>
-          </IonButton>
-      </IonFooter>
+        <IonButton id={SETTINGS_MODAL_TRIGGER} expand="block" fill="clear">
+          <IonIcon icon={settingsOutline} />
+          <IonLabel>Settings</IonLabel>
+        </IonButton>      
+        <SettingsModal />
+      </IonFooter>          
+
     </IonMenu>
   );
 };

@@ -21,10 +21,10 @@ const CreateTaskListModal: React.FC<CreateTaskListModalProps> = ({trigger}) => {
   const [formData, setFormData] = useState<IGoalList>(initialGoalListState);
 
   useEffect(() => {
-    if (modal.current) {
-      modal.current.present();
-      inputRef.current?.setFocus();
-    }
+    // if (modal.current) {
+    //   modal.current.present();
+    //   inputRef.current?.setFocus();
+    // }
   }, []);
 
   const handleOnConfirm = useCallback(() => {
