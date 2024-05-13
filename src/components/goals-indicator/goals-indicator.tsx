@@ -5,22 +5,22 @@ import { useDispatch } from "react-redux";
 import { Chart as ChartJS, ArcElement } from "chart.js";
 import backgroundUnderPlugin from "../../utils/chart-plugins/background-under-plugin";
 import { useAppSelector } from "../../redux/hooks";
-import { getTodayGoals } from "../../redux/selectors/goals-selectors";
+import { selectTodayGoals } from "../../redux/selectors/goals-selectors";
 import { completeDaily } from "../../redux/reducers/points-slice";
 import createChipText from "../../utils/functions/create-chip-text";
 import {
   LIGHT_COLOR,
   PRIMARY_COLOR,
 } from "../../utils/functions/get-ionic-color";
-import { getDailyPoints } from "../../redux/selectors/points-selectors";
+import { selectDailyPoints } from "../../redux/selectors/points-selectors";
 import { checkmarkCircleOutline } from "ionicons/icons";
 
 ChartJS.register(ArcElement, backgroundUnderPlugin);
 
 const GoalsIndicator = () => {
   const dispatch = useDispatch();
-  const dailyTasks = useAppSelector(getTodayGoals);
-  const dailyPoints = useAppSelector(getDailyPoints);
+  const dailyTasks = useAppSelector(selectTodayGoals);
+  const dailyPoints = useAppSelector(selectDailyPoints);
   const completedTodayTasks = dailyTasks.filter(
     (task) => task.completed
   ).length;

@@ -1,36 +1,37 @@
-import { IonApp, setupIonicReact } from "@ionic/react";
-
-/* Core CSS required for Ionic components to work properly */
+import { IonApp, setupIonicReact, IonRouterOutlet } from "@ionic/react";
+import { IonReactRouter } from "@ionic/react-router";
+import { Redirect, Route } from "react-router-dom";
 import "@ionic/react/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
-
-/* Optional CSS utils that can be commented out */
 import "@ionic/react/css/padding.css";
 import "@ionic/react/css/float-elements.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
-
-/* Theme variables */
 import "./theme/variables.css";
 import "./global.css";
 import { Provider } from "react-redux";
 import { makeStore } from "./redux/store";
-import HomeTab from "./pages/home/home";
-import Menu from "./components/menu/menu";
+import HomeTab, { HOME_HREF } from "./pages/home/home";
+import Header from "./components/header/header";
+import SettingsTab, { SETTINGS_HREF } from "./pages/settings/settings";
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <Provider store={makeStore()}>
-      <Menu />
-      <HomeTab />
+      <Header />
+      <IonReactRouter>
+        <IonRouterOutlet>
+          <Route exact path="/" render={() => <Redirect to={HOME_HREF} />} />
+          <Route exact path={HOME_HREF} component={HomeTab} />
+          <Route exact path={SETTINGS_HREF} component={SettingsTab} />
+        </IonRouterOutlet>
+      </IonReactRouter>
     </Provider>
   </IonApp>
 );

@@ -3,11 +3,11 @@ import { IGoalList, IGoal } from "../../utils/interfaces/goals";
 import { RootState } from "../store";
 import { createSelector } from "@reduxjs/toolkit";
 
-export const getGoals = (state: RootState): IGoalList[] =>
+export const selectGoals = (state: RootState): IGoalList[] =>
   state.goals.goalLists;
 
 
-export const getTodayGoals = createSelector(
+export const selectTodayGoals = createSelector(
   (state: RootState) => state.goals.goalLists,
   (goalLists: IGoalList[]) => {
     const today = moment();

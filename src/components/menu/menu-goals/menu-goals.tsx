@@ -6,7 +6,7 @@ import {
   IonButton,
   IonIcon,
 } from "@ionic/react";
-import MenuGoal from "./goal/goal";
+import MenuGoal from "./menu-goal/menu-goal";
 import { add } from "ionicons/icons";
 import { GoalsProps } from "../../goals/goals";
 import CreateTaskModal from "../modals/create-task/create-task";

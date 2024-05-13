@@ -7,7 +7,7 @@ export interface PointsState {
 
 const initialState: PointsState = {
   points: 0,
-  dailyPoints: 5,
+  dailyPoints: 0,
 };
 
 const pointsSlice = createSlice({
@@ -20,7 +20,6 @@ const pointsSlice = createSlice({
     clearPoints: (state) => {
       state.points = 0;
     },
-
     completeDaily: (state) => {
       state.points += state.dailyPoints;
       state.dailyPoints = 0;

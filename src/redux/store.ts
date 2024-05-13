@@ -3,6 +3,7 @@ import createSagaMiddleware from "redux-saga";
 import rootSaga from "./sagas/root-saga";
 import goalsSlice from "./reducers/goals-slice";
 import pointsSlice from "./reducers/points-slice";
+import settingsSlice from "./reducers/settings-slice";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -11,9 +12,9 @@ export const makeStore = () => {
     reducer: {
       goals: goalsSlice,
       points: pointsSlice,
+      settings: settingsSlice,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(sagaMiddleware),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
   });
   sagaMiddleware.run(rootSaga);
 

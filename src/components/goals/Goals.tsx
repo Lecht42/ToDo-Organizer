@@ -9,7 +9,7 @@ import {
   IonList,
 } from "@ionic/react";
 import { useAppDispatch } from "../../redux/hooks";
-import { toggleGoalCompletion } from "../../redux/reducers/goals-slice";
+import { deleteGoalList, toggleGoalCompletion } from "../../redux/reducers/goals-slice";
 import { addPoints } from "../../redux/reducers/points-slice";
 import createChipText from "../../utils/functions/create-chip-text";
 import { IGoalList } from "../../utils/interfaces/goals";
@@ -23,17 +23,16 @@ export interface GoalsProps extends IGoalList {
 const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
   const dispatch = useAppDispatch();
 
-  const onGoalClickHandler = (
-    goalId: number,
-    points: number,
-    attachedListId?: number
-  ) => {
+  const onGoalClickHandler = (goalId: number, points: number, attachedListId?: number) => {
     return () => {
-      dispatch(
-        toggleGoalCompletion({ listId: attachedListId || id, id: goalId })
-      );
+      dispatch(toggleGoalCompletion({ listId: attachedListId || id, id: goalId }));
       dispatch(addPoints(points));
     };
+  };
+
+  const onGoalsClickHandler = () => {
+    dispatch(deleteGoalList(id));
+    dispatch(addPoints(points as number));
   };
 
   if (!items.length) return <></>;
@@ -46,11 +45,11 @@ const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
           {points && (
             <IonChip
               disabled={Boolean(items.filter((e) => !e.completed).length)}
-              color="warning"
+              onClick={() => onGoalsClickHandler()}
             >
               {createChipText(points)}
             </IonChip>
-          )} 
+          )}
         </IonCardTitle>
       </IonCardHeader>
       <IonCardContent>

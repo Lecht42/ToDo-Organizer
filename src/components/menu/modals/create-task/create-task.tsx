@@ -18,7 +18,7 @@ const initialFormData = (listId: number) => ({
   label: "",
   points: 5,
   deadline: moment().toISOString(),
-  period: undefined
+  period: undefined,
 });
 
 const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
@@ -50,9 +50,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
           <IonLabel>Period</IonLabel>
           <IonButton id={PERIOD_PICKER_MODAL_TRIGGER} fill="clear" slot="end" expand="block">
             <IonLabel>
-              {formData.period && formData.period.type && formData.period.value
-                ? `${formData.period?.value} ${formData.period?.type}`
-                : "None"}
+              {formData.period ? `${formData.period?.value} ${formData.period?.type}` : "None"}
             </IonLabel>
           </IonButton>
           <PeriodPickerModal
