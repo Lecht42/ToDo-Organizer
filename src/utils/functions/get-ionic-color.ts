@@ -9,4 +9,9 @@ const getIonicColor = (colorName: string) => {
 export default getIonicColor;
 
 export const PRIMARY_COLOR = getIonicColor("primary"),
-  LIGHT_COLOR = getIonicColor("light");
+  SECONDARY_COLOR = getIonicColor("secondary"),
+  TERTIARY_COLOR = getIonicColor("tertiary"),
+  LIGHT_COLOR = getIonicColor("light"),
+  MEDIUM_COLOR = getIonicColor("medium"),
+  BACKGROUND_COLOR = getIonicColor('background'),
+  DARK_COLOR = getIonicColor("dark");

@@ -14,6 +14,7 @@ import { addPoints } from "../../redux/reducers/points-slice";
 import createChipText from "../../utils/functions/create-chip-text";
 import { IGoalList } from "../../utils/interfaces/goals";
 import Goal from "./goal/goal";
+import "./goals.css";
 
 export interface GoalsProps extends IGoalList {
   id: number;
@@ -52,8 +53,8 @@ const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
           )}
         </IonCardTitle>
       </IonCardHeader>
-      <IonCardContent>
-        <IonList>
+      <IonCardContent >
+      <IonList className="goals">
           {items.map((e) => (
             <Goal
               {...e}

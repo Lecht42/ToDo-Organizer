@@ -24,7 +24,6 @@ const goalsSlice = createSlice({
       state.goalLists.push({
         ...action.payload,
         id: Date.now(),
-        completed: false,
       });
     },
     deleteGoalList: (state, action: PayloadAction<number>) => {

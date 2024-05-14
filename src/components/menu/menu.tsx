@@ -6,11 +6,13 @@ import { add, settingsOutline } from "ionicons/icons";
 import MenuGoals from "./menu-goals/menu-goals";
 import CreateTaskListModal from "./modals/create-task-list/create-task-list";
 import SettingsModal, { SETTINGS_MODAL_TRIGGER } from "./modals/settings/settings";
+import { useTranslation } from "react-i18next";
 
 const CREATE_TASK_LIST_MODAL_ID = "create-new-task-list";
 export const MENU_ID = "menu";
 
 const Menu: React.FC = () => {
+  const {t} = useTranslation();
   const goals = useAppSelector(selectGoals);
 
   return (
@@ -18,7 +20,7 @@ const Menu: React.FC = () => {
       <IonContent>
         <IonButton id={CREATE_TASK_LIST_MODAL_ID} fill="clear" className="ion-margin">
           <IonIcon icon={add} />
-          <IonLabel>Add new task group</IonLabel>
+          <IonLabel>{t("add_new_task_group")}</IonLabel>
         </IonButton>
         <CreateTaskListModal trigger={CREATE_TASK_LIST_MODAL_ID} />
         {goals
@@ -30,7 +32,7 @@ const Menu: React.FC = () => {
       <IonFooter>
         <IonButton id={SETTINGS_MODAL_TRIGGER} expand="block" fill="clear">
           <IonIcon icon={settingsOutline} />
-          <IonLabel>Settings</IonLabel>
+          <IonLabel>{ t("settings") }</IonLabel>
         </IonButton>      
         <SettingsModal />
       </IonFooter>          

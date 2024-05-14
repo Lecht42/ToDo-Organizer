@@ -1,13 +1,9 @@
-import {
-  IonButton,
-  IonModal,
-  IonPicker,
-  IonPickerColumn,
-  IonPickerColumnOption,
-} from "@ionic/react";
+import { IonButton, IonModal, IonPicker, IonPickerColumn, IonPickerColumnOption } from "@ionic/react";
 import { useRef, useState, useEffect } from "react";
-import { IPeriod} from "../../../../utils/interfaces/period";
 import MomentRecurrenceOption from "../../../../utils/enums/moment-recurrence-option";
+import { useTranslation } from "react-i18next";
+import IPeriod from "../../../../utils/interfaces/period";
+import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
 
 export const PERIOD_PICKER_MODAL_TRIGGER = "open-period-picker";
 
@@ -16,10 +12,7 @@ interface PeriodPickerModalProps {
   value?: IPeriod;
 }
 
-const PeriodPickerModal: React.FC<PeriodPickerModalProps> = ({
-  onClick,
-  value,
-}) => {
+const PeriodPickerModal: React.FC<PeriodPickerModalProps> = ({ onClick, value }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const [periodType, setPeriodType] = useState<MomentRecurrenceOption | undefined>(value?.type);
   const [periodValue, setPeriodValue] = useState<number | undefined>(value?.value);
@@ -77,14 +70,7 @@ const PeriodPickerModal: React.FC<PeriodPickerModalProps> = ({
           ))}
         </IonPickerColumn>
       </IonPicker>
-      <IonButton
-        className="ion-margin"
-        size="large"
-        shape="round"
-        onClick={onConfirmHandler}
-      >
-        Confirm
-      </IonButton>
+      <ConfirmButton onClick={onConfirmHandler} />
     </IonModal>
   );
 };

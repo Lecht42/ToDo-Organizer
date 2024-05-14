@@ -8,6 +8,8 @@ import PeriodPickerModal, { PERIOD_PICKER_MODAL_TRIGGER } from "../period-picker
 import { useAppDispatch } from "../../../../redux/hooks";
 import { IAddGoalPayload, addGoal } from "../../../../redux/reducers/goals-slice";
 import IPeriod from "../../../../utils/interfaces/period";
+import { useTranslation } from "react-i18next";
+import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
 
 interface CreateTaskModalProps {
   listId: number;
@@ -25,6 +27,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<IAddGoalPayload>(initialFormData(listId));
 
   useEffect(() => {
@@ -50,27 +53,27 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
           <IonLabel>Period</IonLabel>
           <IonButton id={PERIOD_PICKER_MODAL_TRIGGER} fill="clear" slot="end" expand="block">
             <IonLabel>
-              {formData.period ? `${formData.period?.value} ${formData.period?.type}` : "None"}
+              {formData.period ? `${formData.period?.value} ${formData.period?.type}` : t("none")}
             </IonLabel>
           </IonButton>
           <PeriodPickerModal
             value={formData.period}
-            onClick={(period: IPeriod) => handleOnConfirmSubmodal({ period })}
+            onClick={(period?: IPeriod) => handleOnConfirmSubmodal({ period })}
           />
         </IonItem>
         <IonItem>
-          <IonLabel>Award</IonLabel>
+          <IonLabel>{t("award")}</IonLabel>
           <IonButton id={AWARD_PICKER_MODAL_TRIGGER} fill="clear" slot="end" expand="block">
             <IonLabel>{formData.points}</IonLabel>
           </IonButton>
           <AwardPickerModal
             value={formData.points}
-            onClick={(points: number) => handleOnConfirmSubmodal({ points })}
+            onClick={(points?: number) => handleOnConfirmSubmodal({ points })}
             trigger={AWARD_PICKER_MODAL_TRIGGER}
           />
         </IonItem>
         <IonItem>
-          <IonLabel>Date</IonLabel>
+          <IonLabel>{t("date")}</IonLabel>
           <IonDatetimeButton slot="end" datetime="datetime"></IonDatetimeButton>
           <DatePickerModal
             value={moment(formData.deadline)}
@@ -87,15 +90,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
           ref={inputRef}
         />
       </h1>
-      <IonButton
-        className="ion-margin"
-        size="large"
-        disabled={formData.label.length === 0}
-        shape="round"
-        onClick={handleOnConfirm}
-      >
-        Confirm
-      </IonButton>
+      <ConfirmButton onClick={handleOnConfirm} disabled={formData.label.length === 0} />
     </IonModal>
   );
 };

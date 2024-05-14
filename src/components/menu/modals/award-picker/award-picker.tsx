@@ -1,6 +1,6 @@
 import { IonButton, IonModal, IonPicker, IonPickerColumn, IonPickerColumnOption } from "@ionic/react";
-import { DEFAULT_POINTS_SYMBOL } from "../../../../utils/functions/create-chip-text";
 import { useEffect, useRef, useState } from "react";
+import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
 
 interface AwardPickerModalProps {
   onClick: (points: number) => void;
@@ -46,8 +46,8 @@ const AwardPickerModal: React.FC<AwardPickerModalProps> = ({
       ref={modal}
       keepContentsMounted
     >
-      <IonPicker onIonChange={onChangeHandler}>
-        <IonPickerColumn value={points} step={step} maxValue={maxValue}>
+      <IonPicker>
+        <IonPickerColumn onIonChange={onChangeHandler} value={points}>
           {options.map((e, i) => (
             <IonPickerColumnOption key={i} value={e}>
               {e}
@@ -55,9 +55,7 @@ const AwardPickerModal: React.FC<AwardPickerModalProps> = ({
           ))}
         </IonPickerColumn>
       </IonPicker>
-      <IonButton className="ion-margin" size="large" shape="round" onClick={onConfirmHandler}>
-        Confirm
-      </IonButton>
+      <ConfirmButton onClick={onConfirmHandler} />
     </IonModal>
   );
 };

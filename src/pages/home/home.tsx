@@ -21,7 +21,7 @@ const HomeTab: React.FC = () => {
 
   return (
     <IonPage id="main-content">
-      <Header key={1} hasMenu={false}/>
+      <Header/>
       <IonContent>
         <div className="ion-padding">
           <GoalsIndicator />
