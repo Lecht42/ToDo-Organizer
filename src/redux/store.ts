@@ -1,26 +1,37 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import goalsReducer, { GoalsState } from "./reducers/goals-slice";
+import pointsReducer, { PointsState } from "./reducers/points-slice";
+import settingsReducer, { SettingsState } from "./reducers/settings-slice";
+import authReducer, { AuthState } from "./reducers/auth-slice";
+import storageMiddleware from "./middleware/storage-middleware";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./sagas/root-saga";
-import goalsSlice from "./reducers/goals-slice";
-import pointsSlice from "./reducers/points-slice";
-import settingsSlice from "./reducers/settings-slice";
+
+export interface AppState {
+  goals: GoalsState;
+  points: PointsState;
+  settings: SettingsState;
+  auth: AuthState;
+}
+
+const rootReducer = combineReducers({
+  goals: goalsReducer,
+  points: pointsReducer,
+  settings: settingsReducer,
+  auth: authReducer,
+});
 
 const sagaMiddleware = createSagaMiddleware();
 
-export const makeStore = () => {
-  const store = configureStore({
-    reducer: {
-      goals: goalsSlice,
-      points: pointsSlice,
-      settings: settingsSlice,
-    },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(sagaMiddleware),
-  });
-  sagaMiddleware.run(rootSaga);
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(storageMiddleware, sagaMiddleware), 
+});
 
-  return store;
-};
+sagaMiddleware.run(rootSaga);
 
-export type AppStore = ReturnType<typeof makeStore>;
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

@@ -1,15 +1,16 @@
 import { IonContent, IonPage } from "@ionic/react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectGoals, selectTodayGoals } from "../../redux/selectors/goals-selectors";
-import GoalsIndicator from "../../components/goals-indicator/goals-indicator";
 import { selectDailyPoints } from "../../redux/selectors/points-selectors";
 import { IGoalList } from "../../utils/interfaces/goals";
 import Header from "../../components/header/header";
 import Goals from "../../components/goals/goals";
+import GoalsIndicator from "../../components/goals/goals-indicator/goals-indicator";
+import { useEffect } from "react";
 
 export const HOME_HREF = "/home";
 
-const HomeTab: React.FC = () => {
+const Home: React.FC = () => {
   const todayGoals: IGoalList = {
     id: 0,
     label: "Today",
@@ -38,4 +39,4 @@ const HomeTab: React.FC = () => {
   );
 };
 
-export default HomeTab;
+export default Home;

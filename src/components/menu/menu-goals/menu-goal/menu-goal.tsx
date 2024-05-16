@@ -7,11 +7,9 @@ interface MenuGoalProps extends IGoal {}
 const MenuGoal: React.FC<MenuGoalProps> = ({ label, completed, deadline }) => {
   return (
     <IonItem>
-      <IonLabel className={completed ? "completed" : "not-completed"}>
-        {label}
-      </IonLabel>
+      <IonLabel className={completed ? "completed" : "not-completed"}>{label}</IonLabel>
       <IonLabel slot="end" color="medium">
-        {moment(deadline, moment.ISO_8601).format("MMM Do YY")}
+        <h3>{moment(deadline, moment.ISO_8601).format("MMM Do YY")}</h3>
       </IonLabel>
     </IonItem>
   );

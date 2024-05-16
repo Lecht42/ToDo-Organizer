@@ -32,7 +32,7 @@ i18next
     resources,
     fallbackLng: preloadLanguages[0],
     preload: preloadLanguages,
-    debug: true,
+    debug: false,
     keySeparator: false,
     interpolation: {
       escapeValue: false,

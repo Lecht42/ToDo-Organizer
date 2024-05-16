@@ -1,6 +1,4 @@
-import { IonApp, setupIonicReact, IonRouterOutlet } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route } from "react-router-dom";
+import { IonApp, setupIonicReact } from "@ionic/react";
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
@@ -14,22 +12,21 @@ import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 import "./theme/global.css";
 import { Provider } from "react-redux";
-import { makeStore } from "./redux/store";
-import HomeTab, { HOME_HREF } from "./pages/home/home";
-import Header from "./components/header/header";
-import Menu from "./components/menu/menu";
 import "./i18next";
+import ProviderDiv from "./provider-div";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import googleClientId from "./credentials/google-client-id";
+import store from "./redux/store";
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <Provider store={makeStore()}>
-      <Header />
-      <HomeTab />
-      <Menu />
+    <Provider store={store}>
+      <GoogleOAuthProvider clientId={googleClientId}>
+        <ProviderDiv />
+      </GoogleOAuthProvider>
     </Provider>
   </IonApp>
 );
-
 export default App;

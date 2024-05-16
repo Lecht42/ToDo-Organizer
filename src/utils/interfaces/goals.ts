@@ -10,6 +10,8 @@ export interface IGoal {
   period?: IPeriod;
 }
 
+export type IArchiveGoal = Omit<IGoal, "attachedListId" | "period">;
+
 export interface IGoalList {
   id?: number;
   label: string;

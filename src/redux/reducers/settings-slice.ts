@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import settingsStorage from "../../utils/classes/local-storage/settings-storage";
 
 export interface SettingsState {
   dailyPointsIncome: number;
@@ -7,14 +8,17 @@ export interface SettingsState {
   language: string;
   font: string;
 }
+const storageState: SettingsState = settingsStorage.loadState() as SettingsState;
 
-const initialState: SettingsState = {
+export const settingsInitState = {
   dailyPointsIncome: 10,
   textSize: 20,
   darkMode: false,
   language: "en",
-  font: ""
-};
+  font: "",
+}
+
+const initialState: SettingsState = storageState || settingsInitState;
 
 const settingsSlice = createSlice({
   name: "settings",
@@ -35,9 +39,12 @@ const settingsSlice = createSlice({
     setFont: (state, action: PayloadAction<string>) => {
       state.font = action.payload;
     },
+    setSettingsState: (state, action: PayloadAction<SettingsState>) => {
+      state = action.payload;
+    },
   },
 });
 
-export const { setDailyPointsIncome, toggleDarkMode,  setGlobalTextSize, setFont } = settingsSlice.actions;
+export const { setDailyPointsIncome, toggleDarkMode, setGlobalTextSize, setFont, setSettingsState } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

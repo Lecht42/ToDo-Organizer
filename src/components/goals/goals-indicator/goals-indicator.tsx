@@ -3,15 +3,15 @@ import { Doughnut } from "react-chartjs-2";
 import { IonButton, IonIcon, IonLabel } from "@ionic/react";
 import { useDispatch } from "react-redux";
 import { Chart as ChartJS, ArcElement } from "chart.js";
-import backgroundUnderPlugin from "../../utils/chart-plugins/background-under-plugin";
-import { useAppSelector } from "../../redux/hooks";
-import { selectTodayGoals } from "../../redux/selectors/goals-selectors";
-import { completeDaily } from "../../redux/reducers/points-slice";
-import createChipText from "../../utils/functions/create-chip-text";
-import { PRIMARY_COLOR, SECONDARY_COLOR } from "../../utils/functions/get-ionic-color";
-import { selectDailyPoints } from "../../redux/selectors/points-selectors";
 import { checkmarkCircleOutline } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
+import { useAppSelector } from "../../../redux/hooks";
+import { completeDaily } from "../../../redux/reducers/points-slice";
+import { selectTodayGoals } from "../../../redux/selectors/goals-selectors";
+import { selectDailyPoints } from "../../../redux/selectors/points-selectors";
+import backgroundUnderPlugin from "../../../utils/chart-plugins/background-under-plugin";
+import createChipText from "../../../utils/functions/create-chip-text";
+import { PRIMARY_COLOR, SECONDARY_COLOR } from "../../../utils/functions/get-ionic-color";
 
 ChartJS.register(ArcElement, backgroundUnderPlugin);
 

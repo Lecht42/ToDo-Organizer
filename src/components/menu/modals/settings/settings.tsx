@@ -104,6 +104,8 @@ const SettingsModal = () => {
         </IonItem>
         <IonItem>
           <IonRange
+          label={t("text_size")}
+          labelPlacement="stacked"
             pin
             ticks
             snaps

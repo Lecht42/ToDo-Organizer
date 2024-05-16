@@ -10,6 +10,7 @@ import { IAddGoalPayload, addGoal } from "../../../../redux/reducers/goals-slice
 import IPeriod from "../../../../utils/interfaces/period";
 import { useTranslation } from "react-i18next";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
+import getMaxDate from "../../../../utils/functions/get-max-date";
 
 interface CreateTaskModalProps {
   listId: number;
@@ -76,6 +77,8 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
           <IonLabel>{t("date")}</IonLabel>
           <IonDatetimeButton slot="end" datetime="datetime"></IonDatetimeButton>
           <DatePickerModal
+            min={moment().toISOString()}
+            max={getMaxDate()}
             value={moment(formData.deadline)}
             onConfirm={(date: moment.Moment) => handleOnConfirmSubmodal({ deadline: date.toISOString() })}
           />

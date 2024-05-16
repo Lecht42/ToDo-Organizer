@@ -10,9 +10,9 @@ import {
 } from "@ionic/react";
 import { useAppDispatch } from "../../redux/hooks";
 import { deleteGoalList, toggleGoalCompletion } from "../../redux/reducers/goals-slice";
-import { addPoints } from "../../redux/reducers/points-slice";
+import { completeGoal, completeList } from "../../redux/reducers/points-slice";
 import createChipText from "../../utils/functions/create-chip-text";
-import { IGoalList } from "../../utils/interfaces/goals";
+import { IGoal, IGoalList } from "../../utils/interfaces/goals";
 import Goal from "./goal/goal";
 import "./goals.css";
 
@@ -24,16 +24,23 @@ export interface GoalsProps extends IGoalList {
 const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
   const dispatch = useAppDispatch();
 
-  const onGoalClickHandler = (goalId: number, points: number, attachedListId?: number) => {
+  const onGoalClickHandler = (goal: IGoal) => {
     return () => {
-      dispatch(toggleGoalCompletion({ listId: attachedListId || id, id: goalId }));
-      dispatch(addPoints(points));
+      dispatch(toggleGoalCompletion({ listId: goal.attachedListId || id, id: goal.id }));
+      dispatch(completeGoal(goal));
     };
   };
 
   const onGoalsClickHandler = () => {
+    dispatch(
+      completeList({
+        id,
+        label,
+        items,
+        points,
+      })
+    );
     dispatch(deleteGoalList(id));
-    dispatch(addPoints(points as number));
   };
 
   if (!items.length) return <></>;
@@ -53,18 +60,10 @@ const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
           )}
         </IonCardTitle>
       </IonCardHeader>
-      <IonCardContent >
-      <IonList className="goals">
+      <IonCardContent>
+        <IonList lines="none" className="goals">
           {items.map((e) => (
-            <Goal
-              {...e}
-              onClick={onGoalClickHandler(
-                e.id as number,
-                e.completed ? -e.points : e.points,
-                e.attachedListId
-              )}
-              key={e.id}
-            />
+            <Goal {...e} onClick={onGoalClickHandler(e)} key={e.id} />
           ))}
         </IonList>
       </IonCardContent>
