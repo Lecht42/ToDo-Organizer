@@ -19,13 +19,13 @@ const Header: React.FC = () => {
   return (
     <IonHeader>
       <IonToolbar>
-        <IonButton slot="start" color="dark" onClick={openMenu}>
+        <IonButton fill="clear" slot="start" color="dark" onClick={openMenu}>
           <IonIcon icon={menu} />
         </IonButton>
-        <IonChip color="success">
+        <IonChip slot="" color="success">
           <IonLabel>{createChipText(useAppSelector(selectPoints), "")}</IonLabel>
         </IonChip>
-         <IonButton  slot="end" color="dark" onClick={openArchiveMenu}>   
+         <IonButton fill="clear" slot="end" color="dark" onClick={openArchiveMenu}>   
           <IonIcon icon={archive} />
         </IonButton>
       </IonToolbar>

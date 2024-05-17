@@ -40,7 +40,10 @@ const settingsSlice = createSlice({
       state.font = action.payload;
     },
     setSettingsState: (state, action: PayloadAction<SettingsState>) => {
-      state = action.payload;
+      state.dailyPointsIncome = action.payload.dailyPointsIncome;
+      state.textSize = action.payload.textSize;
+      state.language = action.payload.language;
+      state.darkMode = action.payload.darkMode;
     },
   },
 });

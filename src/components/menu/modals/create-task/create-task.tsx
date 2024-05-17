@@ -31,13 +31,6 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
   const { t } = useTranslation();
   const [formData, setFormData] = useState<IAddGoalPayload>(initialFormData(listId));
 
-  useEffect(() => {
-    // if (modal.current) {
-    //   modal.current.present();
-    //   inputRef.current?.setFocus();
-    // }
-  }, []);
-
   const handleOnConfirm = useCallback(() => {
     dispatch(addGoal(formData));
     modal.current?.dismiss().then(() => setFormData(initialFormData(listId)));
@@ -46,6 +39,8 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
   const handleOnConfirmSubmodal = useCallback((updatedFields: Partial<IAddGoalPayload>) => {
     setFormData((prev) => ({ ...prev, ...updatedFields }));
   }, []);
+
+  const dateTimePicker = "task-date-picker";
 
   return (
     <IonModal id="create-task-modal" className="ion-padding" ref={modal} trigger={String(listId)}>
@@ -75,10 +70,11 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
         </IonItem>
         <IonItem>
           <IonLabel>{t("date")}</IonLabel>
-          <IonDatetimeButton slot="end" datetime="datetime"></IonDatetimeButton>
+          <IonDatetimeButton slot="end" datetime={dateTimePicker}></IonDatetimeButton>
           <DatePickerModal
             min={moment().toISOString()}
             max={getMaxDate()}
+            datetime={dateTimePicker}
             value={moment(formData.deadline)}
             onConfirm={(date: moment.Moment) => handleOnConfirmSubmodal({ deadline: date.toISOString() })}
           />
@@ -88,7 +84,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
         <IonInput
           placeholder="Type here..."
           value={formData.label}
-          maxlength={18}
+          maxlength={16}
           onIonInput={(event) => handleOnConfirmSubmodal({ label: event.detail.value as string })}
           ref={inputRef}
         />

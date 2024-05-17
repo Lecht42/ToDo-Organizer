@@ -20,6 +20,7 @@ import { useAppSelector } from "../../../../redux/hooks";
 import { selectDailyPointsIncome, selectDarkMode, selectTextSize } from "../../../../redux/selectors/settings-selectors";
 import { preloadLanguages } from "../../../../i18next";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
+import toggleDarkPalette from "../../../../utils/functions/toggle-dark-palette";
 
 export const SETTINGS_MODAL_TRIGGER = "open-settings-modal";
 
@@ -50,10 +51,6 @@ const SettingsModal = () => {
     dispatch(setGlobalTextSize(localTextSize));
     dispatch(setDailyPointsIncome(localDailyIncome));
     modal.current?.dismiss();
-  };
-
-  const toggleDarkPalette = (shouldAdd: boolean) => {
-    document.documentElement.classList.toggle("ion-palette-dark", shouldAdd);
   };
 
   const handleChangeDarkMode = (event: ToggleCustomEvent) => {

@@ -48,7 +48,7 @@ const Menu: React.FC = () => {
       <IonFooter>
         <IonItem>
           <GoogleLogin auto_select onSuccess={handleOnLogin} onError={handleOnFailedLogin} />
-          <IonButton slot="end" id={SETTINGS_MODAL_TRIGGER} expand="block" fill="clear">
+          <IonButton slot="end" size="large" id={SETTINGS_MODAL_TRIGGER} expand="block" fill="clear">
             <IonIcon icon={settingsOutline} />
           </IonButton>
         </IonItem>

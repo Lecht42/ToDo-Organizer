@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IGoal, IGoalList } from "../../utils/interfaces/goals";
 import goalsStorage from "../../utils/classes/local-storage/goals-storage";
+import moment from "moment";
 
 export interface IAddGoalPayload extends Omit<IGoal, "deadline"> {
   attachedListId: number;
@@ -33,49 +34,53 @@ const goalsSlice = createSlice({
         ...action.payload,
         id: Date.now(),
       });
-      console.log(state);
     },
     deleteGoalList: (state, action: PayloadAction<number>) => {
       state.goalLists = state.goalLists.filter((list) => list.id !== action.payload);
-      console.log(state);
     },
     clearGoalList: (state) => {
       state.goalLists = [];
-      console.log(state);
     },
     addGoal: (state, action: PayloadAction<IAddGoalPayload>) => {
       const list = state.goalLists.find((list) => list.id === action.payload.attachedListId);
       if (list) {
         list.items.push({
           id: Date.now(),
-          label: action.payload.label,
           completed: false,
-          points: action.payload.points,
-          deadline: action.payload.deadline,
+          ...action.payload,
         });
       }
-      console.log(state);
     },
-    removeGoal: (state, action: PayloadAction<IGoalOperationPayload>) => {
+    deleteGoal: (state, action: PayloadAction<IGoalOperationPayload>) => {
       const list = state.goalLists.find((list) => list.id === action.payload.listId);
       if (list && action.payload.id) {
         list.items = list.items.filter((item) => item.id !== action.payload.id);
       }
-      console.log(state);
     },
-    toggleGoalCompletion: (state, action: PayloadAction<IGoalOperationPayload>) => {
-      const list = state.goalLists.find((list) => list.id === action.payload.listId);
+    toggleGoalCompletion: (state, action: PayloadAction<{ listId: number; id: number }>) => {
+      const { listId, id } = action.payload;
+      const list = state.goalLists.find((list) => list.id === listId);
       if (list) {
-        const item = list.items.find((item) => item.id === action.payload.id);
+        const item = list.items.find((item) => item.id === id);
         if (item) {
-          item.completed = !item.completed;
+          if (!item.completed) {
+            item.completed = true;
+            console.log(item.completed, item.period);
+            if (item.period) {
+              const newDeadline = moment(item.deadline)
+                .add(item.period.value, item.period.type as moment.unitOfTime.DurationConstructor)
+                .toISOString();
+              item.deadline = newDeadline;
+              item.completed = false;
+            }
+          } else {
+            item.completed = false;
+          }
         }
       }
-      console.log(state);
     },
-    setGoalsState: (state, action: PayloadAction<IGoalList[]>) => {
-      state.goalLists = action.payload;
-      console.log(action.payload);
+    setGoalsState: (state, action: PayloadAction<GoalsState>) => {
+      state.goalLists = action.payload.goalLists;
     },
   },
 });
@@ -84,7 +89,7 @@ export const {
   addGoalList,
   deleteGoalList,
   clearGoalList,
-  removeGoal,
+  deleteGoal,
   addGoal,
   toggleGoalCompletion,
   setGoalsState,

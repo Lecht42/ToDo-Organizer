@@ -24,7 +24,7 @@ const authSlice = createSlice({
       state.googleAuth = action.payload;
     },
     setAuthState: (state, action: PayloadAction<AuthState>) => {
-      state = action.payload;
+      state.googleAuth = action.payload.googleAuth;
     },
   },
 });

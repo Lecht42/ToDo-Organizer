@@ -26,7 +26,7 @@ const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
 
   const onGoalClickHandler = (goal: IGoal) => {
     return () => {
-      dispatch(toggleGoalCompletion({ listId: goal.attachedListId || id, id: goal.id }));
+      dispatch(toggleGoalCompletion({ listId: goal.attachedListId || id, id: goal.id as number }));
       dispatch(completeGoal(goal));
     };
   };

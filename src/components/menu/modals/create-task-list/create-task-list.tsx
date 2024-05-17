@@ -23,13 +23,6 @@ const CreateTaskListModal: React.FC<CreateTaskListModalProps> = ({ trigger }) =>
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState<IGoalList>(initialGoalListState);
 
-  useEffect(() => {
-    // if (modal.current) {
-    //   modal.current.present();
-    //   inputRef.current?.setFocus();
-    // }
-  }, []);
-
   const handleOnConfirm = useCallback(() => {
     dispatch(addGoalList(formData));
     modal.current?.dismiss().then(() => setFormData(initialGoalListState));

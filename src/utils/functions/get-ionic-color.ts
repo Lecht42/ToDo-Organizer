@@ -13,5 +13,11 @@ export const PRIMARY_COLOR = getIonicColor("primary"),
   TERTIARY_COLOR = getIonicColor("tertiary"),
   LIGHT_COLOR = getIonicColor("light"),
   MEDIUM_COLOR = getIonicColor("medium"),
-  BACKGROUND_COLOR = getIonicColor('background'),
-  DARK_COLOR = getIonicColor("dark");
+  DARK_COLOR = getIonicColor("dark"),
+  BACKGROUND_COLOR = (function () {
+    const root = document.documentElement;
+    const style = getComputedStyle(root);
+    const color = style.getPropertyValue(`--ion-background-color`);
+
+    return color.trim();
+  })();

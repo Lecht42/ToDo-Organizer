@@ -21,10 +21,7 @@ const PeriodPickerModal: React.FC<PeriodPickerModalProps> = ({ onClick, value })
     if (value) {
       setPeriodType(value.type);
       setPeriodValue(value.value);
-    } else {
-      setPeriodType(undefined);
-      setPeriodValue(undefined);
-    }
+    } 
   }, [value]);
 
   const onConfirmHandler = () => {

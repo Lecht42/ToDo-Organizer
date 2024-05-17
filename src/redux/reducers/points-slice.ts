@@ -12,11 +12,11 @@ export interface PointsState {
 
 const storageState: PointsState = pointsStorage.loadState() as PointsState;
 
-export const pointsInitState =  {
+export const pointsInitState = {
   points: 0,
   dailyPoints: 0,
   archive: [],
-}
+};
 
 const initialState: PointsState = storageState || pointsInitState;
 
@@ -26,13 +26,13 @@ const pointsSlice = createSlice({
   reducers: {
     completeGoal: (state, action: PayloadAction<IGoal>) => {
       const points = action.payload.completed ? -action.payload.points : action.payload.points;
-      state.points += points
+      state.points += points;
       state.archive.push(
         _.omit(
           {
             ...action.payload,
             deadline: moment().toISOString(),
-            points
+            points,
           },
           ["attachedListId", "period"]
         )
@@ -58,7 +58,9 @@ const pointsSlice = createSlice({
       });
     },
     setPointsState: (state, action: PayloadAction<PointsState>) => {
-      state = action.payload;
+      state.archive = action.payload.archive;
+      state.dailyPoints = action.payload.dailyPoints;
+      state.points = action.payload.points;
     },
   },
 });

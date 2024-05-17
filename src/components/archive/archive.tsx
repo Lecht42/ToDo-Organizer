@@ -6,8 +6,6 @@ import {
   IonItem,
   IonLabel,
   IonChip,
-  IonListHeader,
-  IonButton,
   IonHeader,
   IonToolbar,
   IonTitle,
@@ -35,6 +33,8 @@ const Archive: React.FC = () => {
     setSelectedDate(date);
   };
 
+  const archiveDateTimePicker = "archive-date-time-picker";
+
   return (
     <IonMenu side="end" menuId={HISTORY_ID} contentId="main-content">
       <IonHeader>
@@ -44,8 +44,13 @@ const Archive: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         <IonList>
-          <IonDatetimeButton slot="end" datetime="datetime"></IonDatetimeButton>
-          <DatePickerModal max={moment().toISOString()} value={selectedDate} onConfirm={handleDateChange} />
+          <IonDatetimeButton slot="end" datetime={archiveDateTimePicker}></IonDatetimeButton>
+          <DatePickerModal
+            max={moment().toISOString()}
+            datetime={archiveDateTimePicker}
+            value={selectedDate}
+            onConfirm={handleDateChange}
+          />
           {filteredArchive.length > 0 ? (
             filteredArchive.map((e, i) => (
               <IonItem key={i}>

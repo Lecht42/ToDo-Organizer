@@ -20,12 +20,17 @@
 }
 
 .points-counter > * {
-  color: black;
   margin: 0;
+  color: var(--ion-color-primary);
+}
+
+.points-counter > ion-icon {
+  width: 4rem;
+  height: 4rem;
 }
 
 .points-counter > h1 {
-  font-size: 5rem;
+  font-size: 5.5rem;
   font-weight: bold;
 }
 
