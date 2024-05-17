@@ -26,7 +26,7 @@ export const HISTORY_ID = "history";
 const Archive: React.FC = () => {
   const { t } = useTranslation();
   const archive = useAppSelector(selectPointsArchive);
-  const archiveGroupedByDay = _.groupBy(archive, (e) => moment(e.deadline).format("YYYY-MM-DD"));
+  const archiveGroupedByDay = _.groupBy(archive, (e) => moment(e.date).format("YYYY-MM-DD"));
   const [selectedDate, setSelectedDate] = useState<moment.Moment>(moment());
 
   const filteredArchive = archiveGroupedByDay[selectedDate.format("YYYY-MM-DD")] || [];
@@ -51,7 +51,7 @@ const Archive: React.FC = () => {
               <IonItem key={i}>
                 <IonLabel>{e.label}</IonLabel>
                 <IonLabel slot="end" color="medium">
-                  <h3>{moment(e.deadline).format("h:mm A")}</h3>
+                  <h3>{moment(e.date).format("h:mm A")}</h3>
                 </IonLabel>
                 <IonChip slot="end">{createChipText(e.points)}</IonChip>
               </IonItem>

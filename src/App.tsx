@@ -15,18 +15,19 @@ import { Provider } from "react-redux";
 import "./i18next";
 import ProviderDiv from "./provider-div";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import googleClientId from "./credentials/google-client-id";
 import store from "./redux/store";
+import { REACT_APP_GOOGLE_CLIENT_ID } from "./credintials/credintials";
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <Provider store={store}>
-      <GoogleOAuthProvider clientId={googleClientId}>
+      <GoogleOAuthProvider clientId={REACT_APP_GOOGLE_CLIENT_ID}>
         <ProviderDiv />
       </GoogleOAuthProvider>
     </Provider>
   </IonApp>
 );
+
 export default App;

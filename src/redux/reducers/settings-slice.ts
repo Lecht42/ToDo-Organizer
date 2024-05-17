@@ -1,13 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import settingsStorage from "../../utils/classes/local-storage/settings-storage";
+import { SettingsState } from "../../utils/interfaces/states";
 
-export interface SettingsState {
-  dailyPointsIncome: number;
-  textSize: number;
-  darkMode: boolean;
-  language: string;
-  font: string;
-}
 const storageState: SettingsState = settingsStorage.loadState() as SettingsState;
 
 export const settingsInitState = {
@@ -15,8 +9,7 @@ export const settingsInitState = {
   textSize: 20,
   darkMode: false,
   language: "en",
-  font: "",
-}
+};
 
 const initialState: SettingsState = storageState || settingsInitState;
 
@@ -36,15 +29,16 @@ const settingsSlice = createSlice({
     setGlobalTextSize: (state, action: PayloadAction<number>) => {
       state.textSize = action.payload;
     },
-    setFont: (state, action: PayloadAction<string>) => {
-      state.font = action.payload;
-    },
     setSettingsState: (state, action: PayloadAction<SettingsState>) => {
-      state = action.payload;
+      state.dailyPointsIncome = action.payload.dailyPointsIncome;
+      state.textSize = action.payload.textSize;
+      state.language = action.payload.language;
+      state.darkMode = action.payload.darkMode;
     },
   },
 });
 
-export const { setDailyPointsIncome, toggleDarkMode, setGlobalTextSize, setFont, setSettingsState } = settingsSlice.actions;
+export const { setDailyPointsIncome, toggleDarkMode, setGlobalTextSize, setSettingsState } =
+  settingsSlice.actions;
 
 export default settingsSlice.reducer;

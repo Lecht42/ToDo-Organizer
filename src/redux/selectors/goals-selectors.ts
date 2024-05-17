@@ -12,7 +12,7 @@ export const selectTodayGoals = createSelector(
 
     return goalLists.reduce((todayItems: IGoal[], list: IGoalList) => {
       const listTodayItems = list.items
-        .filter((item) => moment(item.deadline).isSame(today, "day"))
+        .filter((item) => moment(item.date).isSame(today, "day"))
         .map((e: IGoal) => {
           return { ...e, attachedListId: list.id };
         });

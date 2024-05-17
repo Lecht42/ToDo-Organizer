@@ -3,12 +3,9 @@ import { IGoal, IArchiveGoal, IGoalList } from "../../utils/interfaces/goals";
 import moment from "moment";
 import _ from "lodash";
 import pointsStorage from "../../utils/classes/local-storage/points-storage";
+import { PointsState } from "../../utils/interfaces/states";
 
-export interface PointsState {
-  points: number;
-  dailyPoints: number;
-  archive: IArchiveGoal[];
-}
+
 
 const storageState: PointsState = pointsStorage.loadState() as PointsState;
 
@@ -31,7 +28,7 @@ const pointsSlice = createSlice({
         _.omit(
           {
             ...action.payload,
-            deadline: moment().toISOString(),
+            date: moment().toISOString(),
             points
           },
           ["attachedListId", "period"]
@@ -44,7 +41,7 @@ const pointsSlice = createSlice({
         id: Date.now(),
         label: "Daily",
         points: state.dailyPoints,
-        deadline: moment().toISOString(),
+        date: moment().toISOString(),
       });
       state.dailyPoints = 0;
     },
@@ -54,11 +51,13 @@ const pointsSlice = createSlice({
         id: action.payload.id || Date.now(),
         label: action.payload.label,
         points: action.payload.points || 0,
-        deadline: moment().toISOString(),
+        date: moment().toISOString(),
       });
     },
     setPointsState: (state, action: PayloadAction<PointsState>) => {
-      state = action.payload;
+      state.archive = action.payload.archive;
+      state.dailyPoints = action.payload.dailyPoints;
+      state.points = action.payload.points;
     },
   },
 });

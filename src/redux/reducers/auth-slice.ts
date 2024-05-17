@@ -1,20 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import authStorage from "../../utils/classes/local-storage/auth-storage";
-
-export interface GoogleAuthResponse {
-  credential: string;
-  clientId: string;
-}
-
-export interface AuthState {
-  googleAuth?: GoogleAuthResponse;
-}
+import { AuthState, GoogleAuthResponse } from "../../utils/interfaces/states";
 
 const storageState: AuthState = authStorage.loadState() as AuthState;
 
-const initialState: AuthState = storageState || {
-  googleAuth: undefined,
+export const authInitState = {
+  goalLists: [],
 };
+
+const initialState: AuthState = storageState || authInitState;
 
 const authSlice = createSlice({
   name: "auth",

@@ -20,7 +20,7 @@ const initialFormData = (listId: number) => ({
   attachedListId: listId,
   label: "",
   points: 5,
-  deadline: moment().toISOString(),
+  date: moment().toISOString(),
   period: undefined,
 });
 
@@ -79,8 +79,8 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
           <DatePickerModal
             min={moment().toISOString()}
             max={getMaxDate()}
-            value={moment(formData.deadline)}
-            onConfirm={(date: moment.Moment) => handleOnConfirmSubmodal({ deadline: date.toISOString() })}
+            value={moment(formData.date)}
+            onConfirm={(date: moment.Moment) => handleOnConfirmSubmodal({ date: date.toISOString() })}
           />
         </IonItem>
       </IonList>

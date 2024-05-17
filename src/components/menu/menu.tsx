@@ -11,6 +11,7 @@ import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { setGoogleAuth } from "../../redux/reducers/auth-slice";
 import { tryFetchUserState } from "../../redux/sagas/user/user-actions";
+import { setupPushSubscription } from "../../utils/service-workers/setup-push-notifications";
 
 const CREATE_TASK_LIST_MODAL_ID = "create-new-task-list";
 export const MENU_ID = "menu";
@@ -29,6 +30,15 @@ const Menu: React.FC = () => {
 
   const handleOnFailedLogin = () => {
     console.error("Google login failed");
+  };
+
+  const handleSubscribe = async () => {
+    try {
+      const subscription = await setupPushSubscription();
+      console.log("Subscription:", subscription);
+    } catch (error) {
+      console.error("Error subscribing to notifications:", error);
+    }
   };
 
   return (

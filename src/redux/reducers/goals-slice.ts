@@ -1,19 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IGoal, IGoalList } from "../../utils/interfaces/goals";
 import goalsStorage from "../../utils/classes/local-storage/goals-storage";
+import { GoalsState } from "../../utils/interfaces/states";
 
-export interface IAddGoalPayload extends Omit<IGoal, "deadline"> {
+export interface IAddGoalPayload extends Omit<IGoal, "date"> {
   attachedListId: number;
-  deadline: string;
+  date: string;
 }
 
 export interface IGoalOperationPayload {
   listId: number;
   id?: number;
-}
-
-export interface GoalsState {
-  goalLists: IGoalList[];
 }
 
 const storageState: GoalsState = goalsStorage.loadState() as GoalsState;
@@ -51,7 +48,7 @@ const goalsSlice = createSlice({
           label: action.payload.label,
           completed: false,
           points: action.payload.points,
-          deadline: action.payload.deadline,
+          date: action.payload.date,
         });
       }
       console.log(state);
@@ -73,9 +70,8 @@ const goalsSlice = createSlice({
       }
       console.log(state);
     },
-    setGoalsState: (state, action: PayloadAction<IGoalList[]>) => {
-      state.goalLists = action.payload;
-      console.log(action.payload);
+    setGoalsState: (state, action: PayloadAction<GoalsState>) => {
+      state.goalLists = action.payload.goalLists;
     },
   },
 });

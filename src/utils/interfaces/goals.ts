@@ -4,7 +4,7 @@ export interface IGoal {
   id?: number;
   label: string;
   points: number;
-  deadline: string;
+  date: string;
   completed?: boolean;
   attachedListId?: number;
   period?: IPeriod;

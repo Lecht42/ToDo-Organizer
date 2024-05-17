@@ -1,9 +1,8 @@
-import { GoalsState } from "../../../redux/reducers/goals-slice";
-import { PointsState } from "../../../redux/reducers/points-slice";
-import { SettingsState } from "../../../redux/reducers/settings-slice";
-import _ from "lodash";
 
-const URL = "http://localhost:3111/users/"; // Ensure you are using http:// or https://
+import _ from "lodash";
+import { PointsState, GoalsState, SettingsState } from "../../interfaces/states";
+
+const URL = "localhost:3111/users";
 
 export interface PutUserBody {
   id: string;
@@ -15,7 +14,7 @@ export interface PutUserBody {
 class UserApi {
   static async getUserState(id: string): Promise<{ data?: PutUserBody; error?: string }> {
     try {
-      const res = await fetch(`${URL}${id}`);
+      const res = await fetch(`${URL}/${id}`);
       if (!res.ok) {
         return { error: "Failed to fetch user state" };
       }
@@ -28,7 +27,7 @@ class UserApi {
 
   static async putUserState(body: PutUserBody): Promise<{ data?: PutUserBody; error?: string }> {
     try {
-      const res = await fetch(`${URL}${body.id}`, {
+      const res = await fetch(`${URL}/${body.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

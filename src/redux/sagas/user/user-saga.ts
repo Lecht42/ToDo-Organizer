@@ -12,7 +12,7 @@ function* fetchUserState(action: ReturnType<typeof tryFetchUserState>): SagaIter
 
     yield put(setSettingsState(res.settings));
     yield put(setPointsState(res.points));
-    yield put(setGoalsState(res.goals.goalLists));
+    yield put(setGoalsState(res.goals));
 
     yield put({ type: "SAVE_STATE" });
   } catch (e: unknown) {
@@ -31,7 +31,9 @@ function* putUserState(action: ReturnType<typeof tryPutUserState>): SagaIterator
   }
 }
 
-export default function* userStorageStateSaga(): SagaIterator {
+ function* userStateSaga(): SagaIterator {
   yield takeLatest(tryFetchUserState.type, fetchUserState);
   yield takeLatest(tryPutUserState.type, putUserState);
 }
+
+export default userStateSaga; 
