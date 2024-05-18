@@ -12,26 +12,26 @@ import { useAppDispatch } from "../../redux/hooks";
 import { deleteGoalList, toggleGoalCompletion } from "../../redux/reducers/goals-slice";
 import { completeGoal, completeList } from "../../redux/reducers/points-slice";
 import createChipText from "../../utils/functions/create-chip-text";
-import { IGoal, IGoalList } from "../../utils/interfaces/goals";
+import "./goal-list.css";
+import { GoalListType, GoalType } from "../../utils/interfaces/goals";
 import Goal from "./goal/goal";
-import "./goals.css";
 
-export interface GoalsProps extends IGoalList {
+export interface GoalListProps extends GoalListType {
   id: number;
   color?: string;
 }
 
-const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
+const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) => {
   const dispatch = useAppDispatch();
 
-  const onGoalClickHandler = (goal: IGoal) => {
+  const onGoalClickHandler = (goal: GoalType) => {
     return () => {
       dispatch(toggleGoalCompletion({ listId: goal.attachedListId || id, id: goal.id as number }));
       dispatch(completeGoal(goal));
     };
   };
 
-  const onGoalsClickHandler = () => {
+  const getListReward = () => {
     dispatch(
       completeList({
         id,
@@ -49,13 +49,16 @@ const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
     <IonCard color={color || "secondary"}>
       <IonCardHeader>
         <IonCardTitle>
-          <IonLabel>{label}</IonLabel>
-          {points && (
+          <IonLabel>
+            <h1>{label}</h1>
+          </IonLabel>
+          {Boolean(points) && (
             <IonChip
               disabled={Boolean(items.filter((e) => !e.completed).length)}
-              onClick={() => onGoalsClickHandler()}
+              onClick={getListReward}
+              color="primary"
             >
-              {createChipText(points)}
+              {createChipText(points as number)}
             </IonChip>
           )}
         </IonCardTitle>
@@ -71,4 +74,4 @@ const Goals: React.FC<GoalsProps> = ({ id, label, items, color, points }) => {
   );
 };
 
-export default Goals;
+export default GoalList;

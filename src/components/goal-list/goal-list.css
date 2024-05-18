@@ -1,0 +1,24 @@
+ion-list {
+  --background: "#ffffff";
+  border-radius: 8px;
+}
+
+ion-list > ion-item {
+  --background: "#ffffff";
+}
+
+ion-card-title {
+  align-items: center;
+  display: flex;
+}
+
+ion-card-title > ion-label {
+  flex: 1;
+  height: min-content;
+  justify-items: flex-start;
+}
+
+ion-card-title > ion-chip {
+  justify-items: flex-end;
+  opacity: 1;
+}

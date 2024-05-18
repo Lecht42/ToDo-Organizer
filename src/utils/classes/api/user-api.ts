@@ -16,6 +16,7 @@ class UserApi {
   static async getUserState(id: string): Promise<{ data?: PutUserBody; error?: string }> {
     try {
       const res = await fetch(`${URL}${id}`);
+
       if (!res.ok) {
         return { error: "Failed to fetch user state" };
       }
@@ -35,6 +36,8 @@ class UserApi {
         },
         body: JSON.stringify(_.omit(body, ["id"])),
       });
+
+      console.log(body);
       if (!res.ok) {
         return { error: "Failed to update user state" };
       }

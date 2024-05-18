@@ -22,7 +22,7 @@ const Header: React.FC = () => {
         <IonButton fill="clear" slot="start" color="dark" onClick={openMenu}>
           <IonIcon icon={menu} />
         </IonButton>
-        <IonChip slot="" color="success">
+        <IonChip color="success">
           <IonLabel>{createChipText(useAppSelector(selectPoints), "")}</IonLabel>
         </IonChip>
          <IonButton fill="clear" slot="end" color="dark" onClick={openArchiveMenu}>   

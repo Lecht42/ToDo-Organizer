@@ -34,6 +34,24 @@
     width: 0%;
   }
 }
+@keyframes line-in {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes line-in-out {
+  0%, 100% {
+    width: 0%;
+  }
+  50% {
+    width: 100%;
+  }
+}
+
 
 .completed::after {
   animation: line-in 0.3s linear forwards;
@@ -41,6 +59,10 @@
 
 .not-completed::after {
   animation: line-out 0.3s linear forwards;
+}
+
+.period::after {
+  animation: line-in-out 0.3s linear forwards;
 }
 
 ion-modal {

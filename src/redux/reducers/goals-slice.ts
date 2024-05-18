@@ -1,9 +1,11 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IGoal, IGoalList } from "../../utils/interfaces/goals";
-import goalsStorage from "../../utils/classes/local-storage/goals-storage";
-import moment from "moment";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { GoalType, GoalListType } from '../../utils/interfaces/goals';
+import goalsStorage from '../../utils/classes/local-storage/goals-storage';
+import moment from 'moment';
+import { t } from 'i18next';
+import _ from 'lodash';
 
-export interface IAddGoalPayload extends Omit<IGoal, "deadline"> {
+export interface IAddGoalPayload extends Omit<GoalType, 'deadline'> {
   attachedListId: number;
   deadline: string;
 }
@@ -14,67 +16,60 @@ export interface IGoalOperationPayload {
 }
 
 export interface GoalsState {
-  goalLists: IGoalList[];
+  goalLists: GoalListType[];
 }
 
 const storageState: GoalsState = goalsStorage.loadState() as GoalsState;
-
-export const goalsInitState = {
-  goalLists: [],
-};
-
-const initialState: GoalsState = storageState || goalsInitState;
+const initialState: GoalsState = storageState || { goalLists: [] };
 
 const goalsSlice = createSlice({
-  name: "goals",
+  name: 'goals',
   initialState,
   reducers: {
-    addGoalList: (state, action: PayloadAction<IGoalList>) => {
-      state.goalLists.push({
-        ...action.payload,
-        id: Date.now(),
-      });
+    addGoalList: (state, action: PayloadAction<GoalListType>) => {
+      state.goalLists.push({ ...action.payload, id: Date.now() });
     },
     deleteGoalList: (state, action: PayloadAction<number>) => {
-      state.goalLists = state.goalLists.filter((list) => list.id !== action.payload);
+      _.remove(state.goalLists, { id: action.payload });
     },
     clearGoalList: (state) => {
       state.goalLists = [];
     },
     addGoal: (state, action: PayloadAction<IAddGoalPayload>) => {
-      const list = state.goalLists.find((list) => list.id === action.payload.attachedListId);
+      const list = _.find(state.goalLists, { id: action.payload.attachedListId });
       if (list) {
-        list.items.push({
-          id: Date.now(),
-          completed: false,
-          ...action.payload,
-        });
+        list.items.push({ id: Date.now(), completed: false, ...action.payload });
       }
     },
     deleteGoal: (state, action: PayloadAction<IGoalOperationPayload>) => {
-      const list = state.goalLists.find((list) => list.id === action.payload.listId);
+      const list = _.find(state.goalLists, { id: action.payload.listId });
       if (list && action.payload.id) {
-        list.items = list.items.filter((item) => item.id !== action.payload.id);
+        _.remove(list.items, { id: action.payload.id });
       }
     },
     toggleGoalCompletion: (state, action: PayloadAction<{ listId: number; id: number }>) => {
       const { listId, id } = action.payload;
-      const list = state.goalLists.find((list) => list.id === listId);
+      const list = _.find(state.goalLists, { id: listId });
       if (list) {
-        const item = list.items.find((item) => item.id === id);
+        const item = _.find(list.items, { id });
         if (item) {
-          if (!item.completed) {
-            item.completed = true;
-            console.log(item.completed, item.period);
-            if (item.period) {
-              const newDeadline = moment(item.deadline)
-                .add(item.period.value, item.period.type as moment.unitOfTime.DurationConstructor)
-                .toISOString();
-              item.deadline = newDeadline;
-              item.completed = false;
+          item.completed = !item.completed;
+          if (item.completed && item.period) {
+            const newDeadline = moment(item.deadline)
+              .add(item.period.value, item.period.type as moment.unitOfTime.DurationConstructor)
+              .toISOString();
+            const repeatedListName = `${list.label} ${t('repeat')}`;
+            const repeatList = _.find(state.goalLists, { label: repeatedListName });
+
+            const newGoal = { ...item, id: Date.now(), deadline: newDeadline, completed: false };
+
+            if (!repeatList) {
+              state.goalLists.push({ id: Date.now(), label: repeatedListName, items: [newGoal] });
+            } else {
+              repeatList.items.push(newGoal);
             }
-          } else {
-            item.completed = false;
+
+            _.remove(list.items, { id }); 
           }
         }
       }

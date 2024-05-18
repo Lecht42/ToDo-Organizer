@@ -1,19 +1,20 @@
+import React, { useState } from "react";
 import { IonItem, IonLabel, IonItemSliding, IonItemOptions, IonItemOption, IonIcon } from "@ionic/react";
-import { trash } from "ionicons/icons";
-import { IGoal } from "../../../../utils/interfaces/goals";
+import { pencil, trash } from "ionicons/icons";
+import { GoalType } from "../../../../utils/interfaces/goals";
 import moment from "moment";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { deleteGoal, deleteGoalList } from "../../../../redux/reducers/goals-slice";
+import { deleteGoal } from "../../../../redux/reducers/goals-slice";
 
-interface MenuGoalProps extends IGoal {
+interface MenuGoalProps extends GoalType {
   listId: number;
 }
 
-const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, label, completed, deadline }) => {
+const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, label, points, completed, deadline, period }) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = () => {
-    dispatch(deleteGoal({id, listId}));
+    dispatch(deleteGoal({ id, listId }));
   };
 
   return (
@@ -24,9 +25,12 @@ const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, label, completed, deadl
           <h3>{moment(deadline).format("MMM Do YY")}</h3>
         </IonLabel>
       </IonItem>
-      <IonItemOptions side="start">
+      <IonItemOptions side="end">
         <IonItemOption color="danger" onClick={handleDelete}>
           <IonIcon icon={trash} />
+        </IonItemOption>
+        <IonItemOption color="success">
+          <IonIcon icon={pencil} />
         </IonItemOption>
       </IonItemOptions>
     </IonItemSliding>

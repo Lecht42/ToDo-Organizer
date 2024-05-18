@@ -1,19 +1,19 @@
 import moment from "moment";
-import { IGoalList, IGoal } from "../../utils/interfaces/goals";
+import { GoalListType, GoalType } from "../../utils/interfaces/goals";
 import { RootState } from "../store";
 import { createSelector } from "@reduxjs/toolkit";
 import { GoalsState } from "../reducers/goals-slice";
 
-export const selectGoals = (state: RootState): IGoalList[] => state.goals.goalLists;
+export const selectGoals = (state: RootState): GoalListType[] => state.goals.goalLists;
 export const selectTodayGoals = createSelector(
   (state: RootState) => state.goals.goalLists,
-  (goalLists: IGoalList[]) => {
+  (goalLists: GoalListType[]) => {
     const today = moment();
 
-    return goalLists.reduce((todayItems: IGoal[], list: IGoalList) => {
+    return goalLists.reduce((todayItems: GoalType[], list: GoalListType) => {
       const listTodayItems = list.items
         .filter((item) => moment(item.deadline).isSame(today, "day"))
-        .map((e: IGoal) => {
+        .map((e: GoalType) => {
           return { ...e, attachedListId: list.id };
         });
       return [...todayItems, ...listTodayItems];

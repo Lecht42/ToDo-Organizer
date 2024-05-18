@@ -2,11 +2,11 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { IonModal, IonItem, IonLabel, IonButton, IonInput } from "@ionic/react";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { addGoalList } from "../../../../redux/reducers/goals-slice";
-import { IGoalList } from "../../../../utils/interfaces/goals";
+import { GoalListType } from "../../../../utils/interfaces/goals";
 import AwardPickerModal, { AWARD_PICKER_MODAL_TRIGGER } from "../award-picker/award-picker";
 import { useTranslation } from "react-i18next";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
-const initialGoalListState: IGoalList = {
+const initialGoalListState: GoalListType = {
   label: "",
   points: 10,
   items: [],
@@ -21,7 +21,7 @@ const CreateTaskListModal: React.FC<CreateTaskListModalProps> = ({ trigger }) =>
   const modal = useRef<HTMLIonModalElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const dispatch = useAppDispatch();
-  const [formData, setFormData] = useState<IGoalList>(initialGoalListState);
+  const [formData, setFormData] = useState<GoalListType>(initialGoalListState);
 
   const handleOnConfirm = useCallback(() => {
     dispatch(addGoalList(formData));

@@ -31,7 +31,7 @@ const GoalsIndicator = () => {
         data: [completedTodayTasks, dailyTasks.length - completedTodayTasks],
         backgroundColor: [PRIMARY_COLOR, "transparent"],
         borderWidth: 0,
-        borderRadius: [dailyTasks.length - completedTodayTasks ?? 80, 0],
+        borderRadius: [dailyTasks.length - completedTodayTasks ? 80 : 0, 0],
         cutout: "80%",
       },
     ],

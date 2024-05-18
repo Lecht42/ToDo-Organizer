@@ -2,10 +2,10 @@ import React from "react";
 import { IonList, IonListHeader, IonLabel, IonButton, IonIcon } from "@ionic/react";
 import MenuGoal from "./menu-goal/menu-goal";
 import { add } from "ionicons/icons";
-import { GoalsProps } from "../../goals/goals";
 import CreateTaskModal from "../modals/create-task/create-task";
+import { GoalListProps } from "../../goal-list/goal-list";
 
-const MenuGoals: React.FC<GoalsProps> = ({ id, label, items }) => {
+const MenuGoalList: React.FC<GoalListProps> = ({ id, label, items }) => {
   return (
     <>
       <IonList>
@@ -26,4 +26,4 @@ const MenuGoals: React.FC<GoalsProps> = ({ id, label, items }) => {
   );
 };
 
-export default MenuGoals;
+export default MenuGoalList;

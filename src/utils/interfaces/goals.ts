@@ -1,6 +1,6 @@
 import IPeriod from "./period";
 
-export interface IGoal {
+export interface GoalType {
   id?: number;
   label: string;
   points: number;
@@ -10,11 +10,11 @@ export interface IGoal {
   period?: IPeriod;
 }
 
-export type IArchiveGoal = Omit<IGoal, "attachedListId" | "period">;
+export type PointsDeltaEntry = Omit<GoalType, "attachedListId" | "period">;
 
-export interface IGoalList {
+export interface GoalListType {
   id?: number;
   label: string;
   points?: number;
-  items: IGoal[];
+  items: GoalType[];
 }
