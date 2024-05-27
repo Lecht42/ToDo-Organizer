@@ -3,12 +3,16 @@ import "./goal.css";
 import createChipText from "../../../utils/functions/create-chip-text";
 import { GoalType } from "../../../utils/interfaces/goals";
 import { timer } from "ionicons/icons";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectPointIconType } from "../../../redux/selectors/settings-selectors";
 
 interface GoalProps extends GoalType {
   onClick: () => void;
 }
 
 const Goal: React.FC<GoalProps> = ({ label, points, completed, onClick, period }) => {
+  const pointSymbol = useAppSelector(selectPointIconType);
+
   return (
     <IonItem button onClick={onClick} detail={false}>
       {period && completed ? (
@@ -24,7 +28,7 @@ const Goal: React.FC<GoalProps> = ({ label, points, completed, onClick, period }
         </IonCheckbox>
       )}
       <IonChip slot="end" disabled={!completed} color="tertiary">
-        {createChipText(points)}
+        {createChipText(points, undefined, pointSymbol)}
       </IonChip>
     </IonItem>
   );

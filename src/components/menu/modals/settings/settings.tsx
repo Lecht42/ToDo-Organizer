@@ -1,62 +1,75 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  IonInput,
   IonItem,
   IonLabel,
   IonList,
   IonListHeader,
   IonModal,
-  IonRange,
   IonSelect,
   IonSelectOption,
   IonToggle,
-  IonButton
+  IonDatetimeButton,
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+  IonIcon,
 } from "@ionic/react";
-import type { ToggleCustomEvent } from "@ionic/react";
 import { useDispatch } from "react-redux";
-import { setDailyPointsIncome, setGlobalTextSize, toggleDarkMode } from "../../../../redux/reducers/settings-slice";
+import { setSettingsState } from "../../../../redux/reducers/settings-slice";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../../redux/hooks";
-import { selectDailyPointsIncome, selectDarkMode, selectTextSize } from "../../../../redux/selectors/settings-selectors";
+import { selectSettingsState } from "../../../../redux/selectors/settings-selectors";
 import { preloadLanguages } from "../../../../i18next";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
 import toggleDarkPalette from "../../../../utils/functions/toggle-dark-palette";
+import { pointsIconTypesArray } from "../../../../utils/functions/create-chip-text";
+import _ from "lodash";
+import DatePickerModal from "../date-picker/date-picker";
+import moment from "moment";
+import PointsPickerModal from "../points-picker/points-picker";
+import { arrowBack } from "ionicons/icons";
+import "./settings.css"
 
 export const SETTINGS_MODAL_TRIGGER = "open-settings-modal";
 
-const SettingsModal = () => {
+interface SettingsProps {
+  isOpen?: boolean;
+  onDismiss: () => void;
+}
+
+const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
   const { t, i18n } = useTranslation();
-  const darkMode = useAppSelector(selectDarkMode);
-  const textSize = useAppSelector(selectTextSize);
-  const dailyIncome = useAppSelector(selectDailyPointsIncome);
   const dispatch = useDispatch();
   const modal = useRef<HTMLIonModalElement>(null);
-
-  const [localDarkMode, setLocalDarkMode] = useState(darkMode);
-  const [localTextSize, setLocalTextSize] = useState(textSize);
-  const [localDailyIncome, setLocalDailyIncome] = useState(dailyIncome);
-  
-  useEffect(() => {
-    document.documentElement.style.setProperty("font-size", `${localTextSize}px`);
-  }, [textSize, localTextSize]);
+  const settings = useAppSelector(selectSettingsState);
+  const [localSettings, setLocalSettings] = useState(settings);
+  const notificationsTimePicker = "notifications-time-index-picker";
 
   useEffect(() => {
-    setLocalDarkMode(darkMode);
-    setLocalTextSize(textSize);
-    setLocalDailyIncome(dailyIncome);
-  }, [darkMode, textSize, dailyIncome]);
+    document.documentElement.style.setProperty("font-size", `${localSettings.textSize}px`);
+    document.documentElement.style.setProperty("--ion-default-font", localSettings.fontFamily);
+    toggleDarkPalette(localSettings.darkMode);
+  }, [localSettings.textSize, localSettings.fontFamily, localSettings.darkMode]);
+
+  useEffect(() => {
+    setLocalSettings(settings);
+  }, [settings]);
 
   const handleOnConfirm = () => {
-    dispatch(toggleDarkMode(localDarkMode));
-    dispatch(setGlobalTextSize(localTextSize));
-    dispatch(setDailyPointsIncome(localDailyIncome));
+    dispatch(setSettingsState(localSettings));
     modal.current?.dismiss();
   };
 
-  const handleChangeDarkMode = (event: ToggleCustomEvent) => {
-    setLocalDarkMode(event.detail.checked);
-    toggleDarkPalette(event.detail.checked);
+  const handleChange = (field: keyof typeof localSettings, value: string | number | boolean) => {
+    setLocalSettings((prevSettings) => ({
+      ...prevSettings,
+      [field]: value,
+    }));
   };
+
+  const dailyPointsPicker = "open-daily-points-picker";
 
   return (
     <IonModal
@@ -65,59 +78,107 @@ const SettingsModal = () => {
       trigger={SETTINGS_MODAL_TRIGGER}
       ref={modal}
       keepContentsMounted
+      isOpen={isOpen}
+      onDidDismiss={onDismiss}
     >
-      <IonListHeader>
-        <IonLabel>{t("settings")}</IonLabel>
-      </IonListHeader>
-      <IonList inset={true}>
-        <IonItem>
-          <IonSelect
-            label={t("language")}
-            value={i18n.language}
-            onIonChange={(event) => i18n.changeLanguage(event.detail.value)}
-          >
-            {preloadLanguages.map((e, i) => (
-              <IonSelectOption value={e} key={i}>
-                {t(e)}
-              </IonSelectOption>
-            ))}
-          </IonSelect>
-        </IonItem>
-        <IonItem>
-          <IonInput
-            label={t("daily_points_income")}
-            type="number"
-            max={100}
-            min={0}
-            value={localDailyIncome}
-            className="ion-text-right"
-            onIonChange={(event) => setLocalDailyIncome(Number(event.detail.value))}
-          />
-        </IonItem>
-        <IonItem>
-          <IonToggle checked={localDarkMode} onIonChange={handleChangeDarkMode}>
-            {t("dark_mode")}
-          </IonToggle>
-        </IonItem>
-        <IonItem>
-          <IonRange
-          label={t("text_size")}
-          labelPlacement="stacked"
-            pin
-            ticks
-            snaps
-            min={14}
-            max={28}
-            step={1}
-            value={localTextSize}
-            onIonChange={(e) => setLocalTextSize(e.detail.value as number)}
-          >
-            <IonLabel slot="start">14px</IonLabel>
-            <IonLabel slot="end">28px</IonLabel>
-          </IonRange>
-        </IonItem>
-        <ConfirmButton onClick={handleOnConfirm} />
-      </IonList>
+      <IonHeader>
+        <IonToolbar>          
+          <IonButton fill="clear" slot="start">
+            <IonIcon icon={arrowBack}/>
+          </IonButton>
+          <IonTitle slot="primary">{t("settings")}</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+        <IonList>
+          <IonListHeader>{t("preferences")}</IonListHeader>
+          <IonItem>
+            <IonSelect
+              label={t("language")}
+              value={i18n.language}
+              onIonChange={(event) => {
+                handleChange("language", event.detail.value);
+                i18n.changeLanguage(event.detail.value);
+              }}
+            >
+              {preloadLanguages.map((e, i) => (
+                <IonSelectOption value={e} key={i}>
+                  {t(e)}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+          </IonItem>
+        </IonList>
+        <IonList>
+          <IonListHeader>{t("daily_activities")}</IonListHeader>
+          <IonItem>
+            <IonLabel>{t("daily_points_income")}</IonLabel>
+            <IonButton id={dailyPointsPicker} fill="clear" slot="end" expand="block">
+              <IonLabel>
+                <h2>{localSettings.dailyPointsIncome}</h2>
+              </IonLabel>
+            </IonButton>
+            <PointsPickerModal
+              value={localSettings.dailyPointsIncome}
+              max={15}
+              onConfirm={(points: number) => handleChange("dailyPointsIncome", points)}
+              trigger={dailyPointsPicker}
+            />
+          </IonItem>
+        </IonList>
+        <IonList>
+          <IonListHeader>{t("appearance")}</IonListHeader>
+          <IonItem>
+            <IonToggle
+              checked={localSettings.darkMode}
+              onIonChange={(event) => {
+                handleChange("darkMode", event.detail.checked);
+                toggleDarkPalette(event.detail.checked);
+              }}
+            >
+              {t("dark_mode")}
+            </IonToggle>
+          </IonItem>
+          <IonItem>
+            <IonSelect
+              value={localSettings.pointIconType}
+              onIonChange={(event) => handleChange("pointIconType", event.detail.value)}
+              label={t("point_icon_type")}
+            >
+              {_.map(pointsIconTypesArray, (e, i) => (
+                <IonSelectOption key={i} value={e}>
+                  {e}
+                </IonSelectOption>
+              ))}
+            </IonSelect>
+          </IonItem>
+        </IonList>
+        <IonList>
+          <IonListHeader>{t("notifications")}</IonListHeader>
+          <IonItem>
+            <IonToggle
+              checked={localSettings.notifications}
+              onIonChange={(event) => handleChange("notifications", event.detail.checked)}
+            >
+              {t("notifications")}
+            </IonToggle>
+          </IonItem>
+          <IonItem disabled={!localSettings.notifications}>
+            <IonLabel>{t("notification_time")}</IonLabel>
+            <IonDatetimeButton datetime={notificationsTimePicker} slot="end" />
+            <DatePickerModal
+              datetime={notificationsTimePicker}
+              presentation="time"
+              presentingElement={modal.current}
+              value={moment(localSettings.notificationTime)}
+              onConfirm={(newDate) => handleChange("notificationTime", newDate.toISOString())}
+            />
+          </IonItem>
+        </IonList>
+        <div className="ion-padding-vertical">
+          <ConfirmButton onClick={handleOnConfirm} />
+        </div>
+      </IonContent>
     </IonModal>
   );
 };

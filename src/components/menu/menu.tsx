@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { IonMenu, IonContent, IonFooter, IonButton, IonIcon, IonLabel, IonItem } from "@ionic/react";
 import { useAppSelector } from "../../redux/hooks";
 import { selectGoals } from "../../redux/selectors/goals-selectors";
 import { add, settingsOutline } from "ionicons/icons";
 import CreateTaskListModal from "./modals/create-task-list/create-task-list";
-import SettingsModal, { SETTINGS_MODAL_TRIGGER } from "./modals/settings/settings";
+import SettingsModal from "./modals/settings/settings";
 import { useTranslation } from "react-i18next";
 import { GoogleCredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
@@ -21,12 +21,11 @@ const Menu: React.FC = () => {
   const dispatch = useDispatch();
   const goals = useAppSelector(selectGoals);
   const userId = useAppSelector(selectGoogleUserId);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false); 
 
   const handleOnLogin = (response: GoogleCredentialResponse) => {
     if (userId) {
-      dispatch(
-        setGoogleAuth({ credential: response.credential as string, clientId: response.clientId as string })
-      );
+      dispatch(setGoogleAuth({ credential: response.credential as string, clientId: response.clientId as string }));
       dispatch({ type: tryFetchUserState.type, payload: response.clientId as string });
     }
   };
@@ -52,11 +51,11 @@ const Menu: React.FC = () => {
       <IonFooter>
         <IonItem>
           <GoogleLogin auto_select onSuccess={handleOnLogin} onError={handleOnFailedLogin} />
-          <IonButton slot="end" id={SETTINGS_MODAL_TRIGGER} expand="block" fill="clear">
+          <IonButton expand="block" slot="end" onClick={() => setIsSettingsOpen(true)} fill="clear">
             <IonIcon icon={settingsOutline} />
           </IonButton>
         </IonItem>
-        <SettingsModal />
+        <SettingsModal isOpen={isSettingsOpen} onDismiss={() => setIsSettingsOpen(false)} />
       </IonFooter>
     </IonMenu>
   );

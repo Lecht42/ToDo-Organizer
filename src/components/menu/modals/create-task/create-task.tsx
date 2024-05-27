@@ -1,16 +1,15 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
-import { IonModal, IonList, IonItem, IonLabel, IonButton, IonInput, IonDatetimeButton } from "@ionic/react";
+import { IonModal, IonList, IonItem, IonLabel, IonButton, IonDatetimeButton, IonInput } from "@ionic/react";
 import moment from "moment";
-
-import AwardPickerModal, { AWARD_PICKER_MODAL_TRIGGER } from "../award-picker/award-picker";
-import DatePickerModal from "../date-picker/date-picker";
-import PeriodPickerModal, { PERIOD_PICKER_MODAL_TRIGGER } from "../period-picker/period-picker";
+import { useRef, useState, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { IAddGoalPayload, addGoal } from "../../../../redux/reducers/goals-slice";
-import IPeriod from "../../../../utils/interfaces/period";
-import { useTranslation } from "react-i18next";
-import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
 import getMaxDate from "../../../../utils/functions/get-max-date";
+import IPeriod from "../../../../utils/interfaces/period";
+import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
+import DatePickerModal from "../date-picker/date-picker";
+import PeriodPickerModal, { PERIOD_PICKER_MODAL_TRIGGER } from "../period-picker/period-picker";
+import PointsPickerModal, { AWARD_PICKER_MODAL_TRIGGER } from "../points-picker/points-picker";
 
 interface CreateTaskModalProps {
   listId: number;
@@ -44,12 +43,12 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
 
   return (
     <IonModal id="create-task-modal" className="ion-padding" ref={modal} trigger={String(listId)}>
-      <IonList className="ion-padding">
+      <IonList lines="full" className="ion-padding">
         <IonItem>
           <IonLabel>Period</IonLabel>
           <IonButton id={PERIOD_PICKER_MODAL_TRIGGER} fill="clear" slot="end" expand="block">
             <IonLabel>
-              {formData.period ? `${formData.period?.value} ${formData.period?.type}` : t("none")}
+              <h2>{formData.period ? `${formData.period?.value} ${formData.period?.type}` : t("none")}</h2>
             </IonLabel>
           </IonButton>
           <PeriodPickerModal
@@ -60,16 +59,20 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
         <IonItem>
           <IonLabel>{t("award")}</IonLabel>
           <IonButton id={AWARD_PICKER_MODAL_TRIGGER} fill="clear" slot="end" expand="block">
-            <IonLabel>{formData.points}</IonLabel>
+            <IonLabel>
+              <h2>{formData.points}</h2>
+            </IonLabel>
           </IonButton>
-          <AwardPickerModal
+          <PointsPickerModal
             value={formData.points}
-            onClick={(points?: number) => handleOnConfirmSubmodal({ points })}
+            onConfirm={(points?: number) => handleOnConfirmSubmodal({ points })}
             trigger={AWARD_PICKER_MODAL_TRIGGER}
           />
         </IonItem>
         <IonItem>
-          <IonLabel>{t("date")}</IonLabel>
+          <IonLabel>
+            <h2>{t("date")}</h2>
+          </IonLabel>
           <IonDatetimeButton slot="end" datetime={dateTimePicker}></IonDatetimeButton>
           <DatePickerModal
             min={moment().toISOString()}

@@ -7,14 +7,16 @@ import {
   IonChip,
   IonLabel,
   IonList,
+  IonTitle,
 } from "@ionic/react";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { deleteGoalList, toggleGoalCompletion } from "../../redux/reducers/goals-slice";
 import { completeGoal, completeList } from "../../redux/reducers/points-slice";
 import createChipText from "../../utils/functions/create-chip-text";
 import "./goal-list.css";
 import { GoalListType, GoalType } from "../../utils/interfaces/goals";
 import Goal from "./goal/goal";
+import { selectPointIconType } from "../../redux/selectors/settings-selectors";
 
 export interface GoalListProps extends GoalListType {
   id: number;
@@ -22,6 +24,7 @@ export interface GoalListProps extends GoalListType {
 }
 
 const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) => {
+  const pointSymbol = useAppSelector(selectPointIconType);
   const dispatch = useAppDispatch();
 
   const onGoalClickHandler = (goal: GoalType) => {
@@ -49,16 +52,14 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
     <IonCard color={color || "secondary"}>
       <IonCardHeader>
         <IonCardTitle>
-          <IonLabel>
-            <h1>{label}</h1>
-          </IonLabel>
+          <IonTitle>{label}</IonTitle>
           {Boolean(points) && (
             <IonChip
+              className="ion-margin-horizontal"
               disabled={Boolean(items.filter((e) => !e.completed).length)}
               onClick={getListReward}
-              color="primary"
             >
-              {createChipText(points as number)}
+              {createChipText(points as number, "+", pointSymbol)}
             </IonChip>
           )}
         </IonCardTitle>

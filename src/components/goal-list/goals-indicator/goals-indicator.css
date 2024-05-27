@@ -19,22 +19,29 @@
   font-style: italic;
 }
 
-.points-counter > * {
+.points-counter > div {
+  flex-direction: column;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+.points-counter > div > * {
   margin: 0;
   color: var(--ion-color-primary);
 }
 
-.points-counter > ion-icon {
+.points-counter > div > ion-icon {
   width: 4rem;
   height: 4rem;
 }
 
-.points-counter > h1 {
+.points-counter > div > h1 {
   font-size: 5.5rem;
   font-weight: bold;
 }
 
-.points-counter > h2 {
+.points-counter > div > h2 {
   text-align: right;
   font-size: 1.2rem;
 }

@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GoalType, GoalListType } from '../../utils/interfaces/goals';
-import goalsStorage from '../../utils/classes/local-storage/goals-storage';
-import moment from 'moment';
-import { t } from 'i18next';
-import _ from 'lodash';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { GoalType, GoalListType } from "../../utils/interfaces/goals";
+import goalsStorage from "../../utils/classes/local-storage/goals-storage";
+import moment from "moment";
+import { t } from "i18next";
+import _ from "lodash";
 
-export interface IAddGoalPayload extends Omit<GoalType, 'deadline'> {
+export interface IAddGoalPayload extends Omit<GoalType, "deadline"> {
   attachedListId: number;
   deadline: string;
 }
@@ -23,7 +23,7 @@ const storageState: GoalsState = goalsStorage.loadState() as GoalsState;
 const initialState: GoalsState = storageState || { goalLists: [] };
 
 const goalsSlice = createSlice({
-  name: 'goals',
+  name: "goals",
   initialState,
   reducers: {
     addGoalList: (state, action: PayloadAction<GoalListType>) => {
@@ -39,6 +39,13 @@ const goalsSlice = createSlice({
       const list = _.find(state.goalLists, { id: action.payload.attachedListId });
       if (list) {
         list.items.push({ id: Date.now(), completed: false, ...action.payload });
+      }
+    },
+    updateGoal: (state, action: PayloadAction<GoalType>) => {
+      const list = _.find(state.goalLists, { id: action.payload.attachedListId });
+      if (list) {
+        let goal = list.items[list.items.findIndex((e) => e.id === action.payload.id)];
+        goal = action.payload;
       }
     },
     deleteGoal: (state, action: PayloadAction<IGoalOperationPayload>) => {
@@ -58,7 +65,7 @@ const goalsSlice = createSlice({
             const newDeadline = moment(item.deadline)
               .add(item.period.value, item.period.type as moment.unitOfTime.DurationConstructor)
               .toISOString();
-            const repeatedListName = `${list.label} ${t('repeat')}`;
+            const repeatedListName = `${list.label} ${t("repeat")}`;
             const repeatList = _.find(state.goalLists, { label: repeatedListName });
 
             const newGoal = { ...item, id: Date.now(), deadline: newDeadline, completed: false };
@@ -69,7 +76,7 @@ const goalsSlice = createSlice({
               repeatList.items.push(newGoal);
             }
 
-            _.remove(list.items, { id }); 
+            _.remove(list.items, { id });
           }
         }
       }
@@ -86,6 +93,7 @@ export const {
   clearGoalList,
   deleteGoal,
   addGoal,
+  updateGoal,
   toggleGoalCompletion,
   setGoalsState,
 } = goalsSlice.actions;

@@ -3,20 +3,20 @@ import { useEffect, useRef, useState } from "react";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
 
 interface AwardPickerModalProps {
-  onClick: (points: number) => void;
+  onConfirm: (points: number) => void;
   value: number;
   step?: number;
-  maxValue?: number;
+  max?: number
   trigger: string;
 }
 
 export const AWARD_PICKER_MODAL_TRIGGER = "open-award-picker-list";
 
-const AwardPickerModal: React.FC<AwardPickerModalProps> = ({
+const PointsPickerModal: React.FC<AwardPickerModalProps> = ({
   value,
-  onClick,
+  onConfirm: onClick,
   step = 1,
-  maxValue = 10,
+  max = 10,
   trigger,
 }) => {
   const modal = useRef<HTMLIonModalElement>(null);
@@ -35,8 +35,7 @@ const AwardPickerModal: React.FC<AwardPickerModalProps> = ({
     setPoints(event.detail.value);
   };
 
-  const optionsCount = Math.ceil((maxValue - 1) / step) + 1;
-  const options = Array.from({ length: optionsCount }, (_, i) => i * step);
+  const options = Array.from({ length: max }, (_, i) => i + 1 * step);
 
   return (
     <IonModal
@@ -60,4 +59,4 @@ const AwardPickerModal: React.FC<AwardPickerModalProps> = ({
   );
 };
 
-export default AwardPickerModal;
+export default PointsPickerModal;

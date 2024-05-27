@@ -3,7 +3,7 @@ import { IonModal, IonItem, IonLabel, IonButton, IonInput } from "@ionic/react";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { addGoalList } from "../../../../redux/reducers/goals-slice";
 import { GoalListType } from "../../../../utils/interfaces/goals";
-import AwardPickerModal, { AWARD_PICKER_MODAL_TRIGGER } from "../award-picker/award-picker";
+import PointsPickerModal, { AWARD_PICKER_MODAL_TRIGGER } from "../points-picker/points-picker";
 import { useTranslation } from "react-i18next";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
 const initialGoalListState: GoalListType = {
@@ -38,16 +38,16 @@ const CreateTaskListModal: React.FC<CreateTaskListModalProps> = ({ trigger }) =>
 
   return (
     <IonModal id="create-task-modal" className="ion-padding" ref={modal} trigger={trigger}>
-      <IonItem className="ion-padding">
+      <IonItem lines="full" className="ion-padding">
         <IonLabel>{t("award")}</IonLabel>
         <IonButton id={AWARD_PICKER_MODAL_TRIGGER} fill="clear" slot="end" expand="block">
-          <IonLabel>{formData.points}</IonLabel>
+          <IonLabel><h2>{formData.points}</h2></IonLabel>
         </IonButton>
-        <AwardPickerModal
+        <PointsPickerModal
           value={formData.points as number}
           step={5}
-          maxValue={50}
-          onClick={(points: number) => handleOnConfirmSubmodal(undefined, points)}
+          max={50}
+          onConfirm={(points: number) => handleOnConfirmSubmodal(undefined, points)}
           trigger={AWARD_PICKER_MODAL_TRIGGER}
         />
       </IonItem>

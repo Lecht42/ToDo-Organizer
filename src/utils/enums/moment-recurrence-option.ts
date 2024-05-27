@@ -3,4 +3,7 @@ type MomentRecurrenceOption =
   | "week"
   | "month";
 
+
+const momentRecurrenceOptionsArray : MomentRecurrenceOption[] = ["day", "week", "month"];
+
 export default MomentRecurrenceOption;

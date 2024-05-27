@@ -54,15 +54,23 @@ const GoalsIndicator = () => {
     <div className="chart-container">
       <Doughnut data={data} width="100%" height="100%" options={options as any} />
       <div className="points-counter">
-        {dailyTasks.length - completedTodayTasks > 0 ? (
-          <h1>{`${completedTodayTasks}/${dailyTasks.length}`}</h1>
-        ) : dailyPoints > 0 && dailyTasks.length > 0 ? (
-          <IonButton size="large" shape="round" onClick={handleOnCompleteDaily}>
-            <IonLabel>{createChipText(5)}</IonLabel>
-          </IonButton>
-        ) : (
-          <IonIcon size="large" icon={checkmarkCircleOutline} />
-        )}
+        <div>
+          {dailyTasks.length - completedTodayTasks > 0 ? (
+            <>
+              <h1>{`${completedTodayTasks}/${dailyTasks.length}`}</h1>
+              <h2>{t("objectives")}</h2>
+            </>
+          ) : dailyPoints > 0 && dailyTasks.length > 0 ? (
+            <IonButton size="large" shape="round" onClick={handleOnCompleteDaily}>
+              <IonLabel>{createChipText(5)}</IonLabel>
+            </IonButton>
+          ) : (
+            <>
+              <IonIcon size="large" icon={checkmarkCircleOutline} />
+              <h2>{t("no_more_daily_tasks")}</h2>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

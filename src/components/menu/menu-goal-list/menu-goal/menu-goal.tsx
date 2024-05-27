@@ -10,7 +10,7 @@ interface MenuGoalProps extends GoalType {
   listId: number;
 }
 
-const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, label, points, completed, deadline, period }) => {
+const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, label, completed, deadline }) => {
   const dispatch = useAppDispatch();
 
   const handleDelete = () => {
@@ -25,7 +25,7 @@ const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, label, points, complete
           <h3>{moment(deadline).format("MMM Do YY")}</h3>
         </IonLabel>
       </IonItem>
-      <IonItemOptions side="end">
+      <IonItemOptions side="start">
         <IonItemOption color="danger" onClick={handleDelete}>
           <IonIcon icon={trash} />
         </IonItemOption>

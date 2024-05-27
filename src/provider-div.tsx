@@ -10,6 +10,7 @@ import { selectAuthState } from "./redux/selectors/auth-selectors";
 import { tryFetchUserState, tryPutUserState } from "./redux/sagas/user/user-actions";
 import { selectPointsState } from "./redux/selectors/points-selectors";
 import _ from "lodash";
+import toggleDarkPalette from "./utils/functions/toggle-dark-palette";
 
 const ProviderDiv: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +23,7 @@ const ProviderDiv: React.FC = () => {
   useEffect(() => {
     if (auth.googleAuth?.clientId) {
       dispatch(tryFetchUserState(auth.googleAuth.clientId));
-    }
+    }      
   }, [dispatch, auth.googleAuth?.clientId]);
 
   useEffect(() => {
