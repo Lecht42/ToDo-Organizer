@@ -1,9 +1,9 @@
 import { IonModal, IonList, IonItem, IonLabel, IonButton, IonDatetimeButton, IonInput } from "@ionic/react";
 import moment from "moment";
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { IAddGoalPayload, addGoal } from "../../../../redux/reducers/goals-slice";
+import { IAddGoalPayload, addGoal, updateGoal } from "../../../../redux/reducers/goals-slice";
 import getMaxDate from "../../../../utils/functions/get-max-date";
 import IPeriod from "../../../../utils/interfaces/period";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
@@ -13,27 +13,39 @@ import PointsPickerModal, { AWARD_PICKER_MODAL_TRIGGER } from "../points-picker/
 
 interface CreateTaskModalProps {
   listId: number;
+  initialData?: IAddGoalPayload;
+  onClose: () => void;
 }
 
-const initialFormData = (listId: number) => ({
+const initialFormData = (listId: number, initialData?: IAddGoalPayload) => ({
   attachedListId: listId,
-  label: "",
-  points: 5,
-  deadline: moment().toISOString(),
-  period: undefined,
+  label: initialData?.label || "",
+  points: initialData?.points || 5,
+  deadline: initialData?.deadline || moment().toISOString(),
+  period: initialData?.period || undefined,
+  completed: initialData?.completed || false,
+  id: initialData?.id,
 });
 
-const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
+const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId, initialData, onClose }) => {
   const modal = useRef<HTMLIonModalElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const [formData, setFormData] = useState<IAddGoalPayload>(initialFormData(listId));
+  const [formData, setFormData] = useState<IAddGoalPayload>(initialFormData(listId, initialData));
+
+  useEffect(() => {
+    setFormData(initialFormData(listId, initialData));
+  }, [listId, initialData]);
 
   const handleOnConfirm = useCallback(() => {
-    dispatch(addGoal(formData));
-    modal.current?.dismiss().then(() => setFormData(initialFormData(listId)));
-  }, [dispatch, formData, listId]);
+    if (formData.id) {
+      dispatch(updateGoal(formData));
+    } else {
+      dispatch(addGoal(formData));
+    }
+    modal.current?.dismiss().then(onClose);
+  }, [dispatch, formData, onClose]);
 
   const handleOnConfirmSubmodal = useCallback((updatedFields: Partial<IAddGoalPayload>) => {
     setFormData((prev) => ({ ...prev, ...updatedFields }));
@@ -42,13 +54,13 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ listId }) => {
   const dateTimePicker = "task-date-picker";
 
   return (
-    <IonModal id="create-task-modal" className="ion-padding" ref={modal} trigger={String(listId)}>
+    <IonModal id="create-task-modal" className="ion-padding" ref={modal} isOpen={true} onDidDismiss={onClose}>
       <IonList lines="full" className="ion-padding">
         <IonItem>
           <IonLabel>Period</IonLabel>
           <IonButton id={PERIOD_PICKER_MODAL_TRIGGER} fill="clear" slot="end" expand="block">
             <IonLabel>
-              <h2>{formData.period ? `${formData.period?.value} ${formData.period?.type}` : t("none")}</h2>
+              <h3>{formData.period ? `${t("every")} ${formData.period?.value} ${formData.period?.type}` : t("none")}</h3>
             </IonLabel>
           </IonButton>
           <PeriodPickerModal

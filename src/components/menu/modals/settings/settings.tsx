@@ -15,6 +15,7 @@ import {
   IonTitle,
   IonToolbar,
   IonIcon,
+  IonRange,
 } from "@ionic/react";
 import { useDispatch } from "react-redux";
 import { setSettingsState } from "../../../../redux/reducers/settings-slice";
@@ -30,7 +31,7 @@ import DatePickerModal from "../date-picker/date-picker";
 import moment from "moment";
 import PointsPickerModal from "../points-picker/points-picker";
 import { arrowBack } from "ionicons/icons";
-import "./settings.css"
+import "./settings.css";
 
 export const SETTINGS_MODAL_TRIGGER = "open-settings-modal";
 
@@ -51,7 +52,8 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
     document.documentElement.style.setProperty("font-size", `${localSettings.textSize}px`);
     document.documentElement.style.setProperty("--ion-default-font", localSettings.fontFamily);
     toggleDarkPalette(localSettings.darkMode);
-  }, [localSettings.textSize, localSettings.fontFamily, localSettings.darkMode]);
+    i18n.changeLanguage(localSettings.language);
+  }, [localSettings.textSize, localSettings.fontFamily, localSettings.darkMode, localSettings.language]);
 
   useEffect(() => {
     setLocalSettings(settings);
@@ -59,7 +61,7 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
 
   const handleOnConfirm = () => {
     dispatch(setSettingsState(localSettings));
-    modal.current?.dismiss();
+    onDismiss();
   };
 
   const handleChange = (field: keyof typeof localSettings, value: string | number | boolean) => {
@@ -74,19 +76,20 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
   return (
     <IonModal
       id="settings-modal"
-      className="ion-padding"
+      className="ion-padding settings"
       trigger={SETTINGS_MODAL_TRIGGER}
       ref={modal}
       keepContentsMounted
+      showBackdrop={false}
       isOpen={isOpen}
       onDidDismiss={onDismiss}
     >
       <IonHeader>
-        <IonToolbar>          
-          <IonButton fill="clear" slot="start">
-            <IonIcon icon={arrowBack}/>
+        <IonToolbar>
+          <IonButton fill="clear" slot="start" onClick={onDismiss}>
+            <IonIcon icon={arrowBack} />
           </IonButton>
-          <IonTitle slot="primary">{t("settings")}</IonTitle>
+          <IonTitle slot="end">{t("settings")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
@@ -96,16 +99,42 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
             <IonSelect
               label={t("language")}
               value={i18n.language}
-              onIonChange={(event) => {
-                handleChange("language", event.detail.value);
-                i18n.changeLanguage(event.detail.value);
-              }}
+              onIonChange={(event) => handleChange("language", event.detail.value)}
             >
               {preloadLanguages.map((e, i) => (
                 <IonSelectOption value={e} key={i}>
                   {t(e)}
                 </IonSelectOption>
               ))}
+            </IonSelect>
+          </IonItem>
+          <IonItem>
+            <IonRange
+              label={t("font_size")}
+              labelPlacement="start"
+              pin
+              ticks
+              snaps
+              min={10}
+              max={30}
+              step={1}
+              value={localSettings.textSize}
+              onIonChange={(event) => handleChange("textSize", Number(event.detail.value))}
+            >
+              <IonLabel slot="start">10</IonLabel>
+              <IonLabel slot="end">30</IonLabel>
+            </IonRange>
+          </IonItem>
+          <IonItem>
+            <IonSelect
+              label={t("font_family")}
+              value={localSettings.fontFamily}
+              onIonChange={(event) => handleChange("fontFamily", event.detail.value)}
+            >
+              <IonSelectOption value="Arial">Arial</IonSelectOption>
+              <IonSelectOption value="Times New Roman">Times New Roman</IonSelectOption>
+              <IonSelectOption value="Courier New">Courier New</IonSelectOption>
+              <IonSelectOption value="Verdana">Verdana</IonSelectOption>
             </IonSelect>
           </IonItem>
         </IonList>
@@ -165,7 +194,7 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
           </IonItem>
           <IonItem disabled={!localSettings.notifications}>
             <IonLabel>{t("notification_time")}</IonLabel>
-            <IonDatetimeButton datetime={notificationsTimePicker} slot="end" />
+            <IonDatetimeButton color="dark" datetime={notificationsTimePicker} slot="end" />
             <DatePickerModal
               datetime={notificationsTimePicker}
               presentation="time"

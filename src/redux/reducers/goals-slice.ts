@@ -38,14 +38,16 @@ const goalsSlice = createSlice({
     addGoal: (state, action: PayloadAction<IAddGoalPayload>) => {
       const list = _.find(state.goalLists, { id: action.payload.attachedListId });
       if (list) {
-        list.items.push({ id: Date.now(), completed: false, ...action.payload });
+        list.items.push({ ...action.payload, id: Date.now(), completed: false });
       }
     },
     updateGoal: (state, action: PayloadAction<GoalType>) => {
       const list = _.find(state.goalLists, { id: action.payload.attachedListId });
       if (list) {
-        let goal = list.items[list.items.findIndex((e) => e.id === action.payload.id)];
-        goal = action.payload;
+        const goalIndex = list.items.findIndex((e) => e.id === action.payload.id);
+        if (goalIndex !== -1) {
+          list.items[goalIndex] = action.payload;
+        }
       }
     },
     deleteGoal: (state, action: PayloadAction<IGoalOperationPayload>) => {
@@ -81,6 +83,12 @@ const goalsSlice = createSlice({
         }
       }
     },
+    reorderGoals: (state, action: PayloadAction<{ listId: number; reorderedItems: GoalType[] }>) => {
+      const list = _.find(state.goalLists, { id: action.payload.listId });
+      if (list) {
+        list.items = action.payload.reorderedItems;
+      }
+    },
     setGoalsState: (state, action: PayloadAction<GoalsState>) => {
       state.goalLists = action.payload.goalLists;
     },
@@ -96,6 +104,7 @@ export const {
   updateGoal,
   toggleGoalCompletion,
   setGoalsState,
+  reorderGoals,
 } = goalsSlice.actions;
 
 export default goalsSlice.reducer;

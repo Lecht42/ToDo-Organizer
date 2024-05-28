@@ -4,6 +4,7 @@ import MomentRecurrenceOption from "../../../../utils/enums/moment-recurrence-op
 import { useTranslation } from "react-i18next";
 import IPeriod from "../../../../utils/interfaces/period";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
+import { t } from "i18next";
 
 export const PERIOD_PICKER_MODAL_TRIGGER = "open-period-picker";
 
@@ -21,7 +22,7 @@ const PeriodPickerModal: React.FC<PeriodPickerModalProps> = ({ onClick, value })
     if (value) {
       setPeriodType(value.type);
       setPeriodValue(value.value);
-    } 
+    }
   }, [value]);
 
   const onConfirmHandler = () => {
@@ -41,28 +42,29 @@ const PeriodPickerModal: React.FC<PeriodPickerModalProps> = ({ onClick, value })
     setPeriodValue(parseInt(event.detail.value, 10));
   };
 
-  const periodRecurrenceOptions: MomentRecurrenceOption[] = ["day", "week", "month"];
+  const periodRecurrenceOptions: MomentRecurrenceOption[] = [t("days"), t("weeks"), t("months")];
 
   return (
     <IonModal
       id="period-picker-modal"
-      className="ion-padding"
+      className="ion-padding sub-modal"
       trigger={PERIOD_PICKER_MODAL_TRIGGER}
       ref={modal}
       keepContentsMounted
     >
       <IonPicker>
-        <IonPickerColumn value={periodType} onIonChange={onChangeTypeHandler}>
-          {periodRecurrenceOptions.map((option, index) => (
-            <IonPickerColumnOption key={index} value={option}>
-              {option}
-            </IonPickerColumnOption>
-          ))}
-        </IonPickerColumn>
         <IonPickerColumn value={periodValue?.toString()} onIonChange={onChangeValueHandler}>
+          <div slot="prefix">{t("every")}</div>
           {Array.from({ length: 3 }, (_, i) => i + 1).map((number, index) => (
             <IonPickerColumnOption key={index} value={number.toString()}>
               {number}
+            </IonPickerColumnOption>
+          ))}
+        </IonPickerColumn>
+        <IonPickerColumn value={periodType} onIonChange={onChangeTypeHandler}>
+          {periodRecurrenceOptions.map((option, index) => (
+            <IonPickerColumnOption className="ion-text-left" key={index} value={option}>
+              {option}
             </IonPickerColumnOption>
           ))}
         </IonPickerColumn>

@@ -1,47 +1,35 @@
-.chart-container {
+div.chart-container {
   position: relative;
   width: 100%;
   height: 30%;
   padding: 10px;
 }
 
-.points-counter {
-  display: flex;
-  justify-items: center;
-  align-items: center;
+div.points-counter {
   flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  width: 70%;
+  color: var(--ion-color-primary);
   position: absolute;
+  white-space: normal;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   margin: 0;
   z-index: 10;
+}
+
+
+div.points-counter > ion-icon {
+  height: 86px;
+  width: 86px;
+}
+
+div.points-counter > ion-title {
+  font-size: 5.2rem;
   font-style: italic;
-}
-
-.points-counter > div {
-  flex-direction: column;
-  display: flex;
-  justify-items: center;
-  align-items: center;
-}
-
-.points-counter > div > * {
-  margin: 0;
-  color: var(--ion-color-primary);
-}
-
-.points-counter > div > ion-icon {
-  width: 4rem;
-  height: 4rem;
-}
-
-.points-counter > div > h1 {
-  font-size: 5.5rem;
   font-weight: bold;
-}
-
-.points-counter > div > h2 {
-  text-align: right;
-  font-size: 1.2rem;
 }

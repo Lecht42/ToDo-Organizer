@@ -27,6 +27,10 @@
   "notifications": "Notifications",
   "notification_time": "Notifications time",
   "repeat": "Repeat",
+  "days" : "Days",
+  "weeks": "Weeks",
+  "months": "Months",
+  "every": "Every",
   "uk": "Ukrainian",
   "en": "English",
   "fr": "French"

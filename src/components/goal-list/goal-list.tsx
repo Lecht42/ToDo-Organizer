@@ -5,7 +5,6 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonChip,
-  IonLabel,
   IonList,
   IonTitle,
 } from "@ionic/react";
@@ -17,6 +16,7 @@ import "./goal-list.css";
 import { GoalListType, GoalType } from "../../utils/interfaces/goals";
 import Goal from "./goal/goal";
 import { selectPointIconType } from "../../redux/selectors/settings-selectors";
+import _ from "lodash";
 
 export interface GoalListProps extends GoalListType {
   id: number;
@@ -56,7 +56,7 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
           {Boolean(points) && (
             <IonChip
               className="ion-margin-horizontal"
-              disabled={Boolean(items.filter((e) => !e.completed).length)}
+              disabled={Boolean(_.filter(items, (e) => !e.completed).length)}
               onClick={getListReward}
             >
               {createChipText(points as number, "+", pointSymbol)}
@@ -65,9 +65,9 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
         </IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
-        <IonList lines="none" className="goals">
-          {items.map((e) => (
-            <Goal {...e} onClick={onGoalClickHandler(e)} key={e.id} />
+        <IonList lines="none">
+          {_.map(items, (e, i) => (
+            <Goal {...e} onClick={onGoalClickHandler(e)} key={i} />
           ))}
         </IonList>
       </IonCardContent>

@@ -1,12 +1,13 @@
 import { IonButton, IonModal, IonPicker, IonPickerColumn, IonPickerColumnOption } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
+import _ from "lodash";
 
 interface AwardPickerModalProps {
   onConfirm: (points: number) => void;
   value: number;
   step?: number;
-  max?: number
+  max?: number;
   trigger: string;
 }
 
@@ -35,23 +36,24 @@ const PointsPickerModal: React.FC<AwardPickerModalProps> = ({
     setPoints(event.detail.value);
   };
 
-  const options = Array.from({ length: max }, (_, i) => i + 1 * step);
-
   return (
     <IonModal
       id="award-picker-modal"
-      className="ion-padding"
+      className="ion-padding sub-modal"
       trigger={trigger}
       ref={modal}
       keepContentsMounted
     >
       <IonPicker>
         <IonPickerColumn onIonChange={onChangeHandler} value={points}>
-          {options.map((e, i) => (
-            <IonPickerColumnOption key={i} value={e}>
-              {e}
-            </IonPickerColumnOption>
-          ))}
+          {_.map(
+            Array.from({ length: max }, (_, i) => i + 1 * step),
+            (e, i) => (
+              <IonPickerColumnOption key={i} value={e}>
+                {e}
+              </IonPickerColumnOption>
+            )
+          )}
         </IonPickerColumn>
       </IonPicker>
       <ConfirmButton onClick={onConfirmHandler} />

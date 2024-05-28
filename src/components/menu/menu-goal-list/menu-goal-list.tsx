@@ -1,11 +1,18 @@
-import React from "react";
-import { IonList, IonListHeader, IonLabel, IonButton, IonIcon } from "@ionic/react";
+import React, { useState } from "react";
+import { IonList, IonListHeader, IonLabel, IonButton, IonIcon, IonModal } from "@ionic/react";
 import MenuGoal from "./menu-goal/menu-goal";
 import { add } from "ionicons/icons";
 import CreateTaskModal from "../modals/create-task/create-task";
 import { GoalListProps } from "../../goal-list/goal-list";
+import _ from "lodash";
 
 const MenuGoalList: React.FC<GoalListProps> = ({ id, label, items }) => {
+  const [isCreatingTask, setIsCreatingTask] = useState(false);
+
+  const handleCreateTask = () => {
+    setIsCreatingTask(true);
+  };
+
   return (
     <>
       <IonList>
@@ -13,15 +20,20 @@ const MenuGoalList: React.FC<GoalListProps> = ({ id, label, items }) => {
           <IonLabel>
             <h1>{label}</h1>
           </IonLabel>
-          <IonButton id={String(id)} expand="block" size="large">
+          <IonButton onClick={handleCreateTask} id={String(id)} expand="block" size="large">
             <IonIcon icon={add} />
           </IonButton>
         </IonListHeader>
-        {items.map((e) => (
-          <MenuGoal {...e} listId={id} key={e.id} />
-        ))}
+        {_.map(
+          _.filter(items, (e) => e.id !== undefined),
+          (e, i) => (
+            <MenuGoal {...e} listId={id} key={i} />
+          )
+        )}
       </IonList>
-      <CreateTaskModal listId={id} />
+      <IonModal isOpen={isCreatingTask} onDidDismiss={() => setIsCreatingTask(false)}>
+        <CreateTaskModal listId={id} onClose={() => setIsCreatingTask(false)} />
+      </IonModal>
     </>
   );
 };

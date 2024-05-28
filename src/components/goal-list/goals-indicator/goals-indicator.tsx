@@ -1,9 +1,9 @@
 import "./goals-indicator.css";
 import { Doughnut } from "react-chartjs-2";
-import { IonButton, IonIcon, IonLabel } from "@ionic/react";
+import { IonButton, IonIcon, IonLabel, IonTitle } from "@ionic/react";
 import { useDispatch } from "react-redux";
 import { Chart as ChartJS, ArcElement } from "chart.js";
-import { checkmarkCircleOutline } from "ionicons/icons";
+import { checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../redux/hooks";
 import { completeDaily } from "../../../redux/reducers/points-slice";
@@ -11,8 +11,14 @@ import { selectTodayGoals } from "../../../redux/selectors/goals-selectors";
 import { selectDailyPoints } from "../../../redux/selectors/points-selectors";
 import backgroundUnderPlugin from "../../../utils/chart-plugins/background-under-plugin";
 import createChipText from "../../../utils/functions/create-chip-text";
-import { BACKGROUND_COLOR, PRIMARY_COLOR, SECONDARY_COLOR } from "../../../utils/functions/get-ionic-color";
+import {
+  PRIMARY_COLOR,
+  SECONDARY_COLOR,
+  TERTIARY_COLOR,
+  getBackgroundColor,
+} from "../../../utils/functions/get-ionic-color";
 import { selectDarkMode } from "../../../redux/selectors/settings-selectors";
+import { useEffect, useState } from "react";
 
 ChartJS.register(ArcElement, backgroundUnderPlugin);
 
@@ -21,6 +27,7 @@ const GoalsIndicator = () => {
   const dailyTasks = useAppSelector(selectTodayGoals);
   const dailyPoints = useAppSelector(selectDailyPoints);
   const completedTodayTasks = dailyTasks.filter((task) => task.completed).length;
+  const [options, setOptions] = useState({});
   const darkMode = useAppSelector(selectDarkMode);
   const { t } = useTranslation();
 
@@ -37,14 +44,16 @@ const GoalsIndicator = () => {
     ],
   };
 
-  const options = {
-    plugins: {
-      backgroundUnder: {
-        underChartColor: SECONDARY_COLOR,
-        backgroundColor: darkMode ? BACKGROUND_COLOR : "white",
+  useEffect(() => {
+    setOptions({
+      plugins: {
+        backgroundUnder: {
+          underChartColor: SECONDARY_COLOR,
+          backgroundColor: getBackgroundColor(),
+        },
       },
-    },
-  };
+    });
+  }, [darkMode]);
 
   const handleOnCompleteDaily = () => {
     dispatch(completeDaily());
@@ -53,24 +62,19 @@ const GoalsIndicator = () => {
   return (
     <div className="chart-container">
       <Doughnut data={data} width="100%" height="100%" options={options as any} />
-      <div className="points-counter">
-        <div>
-          {dailyTasks.length - completedTodayTasks > 0 ? (
-            <>
-              <h1>{`${completedTodayTasks}/${dailyTasks.length}`}</h1>
-              <h2>{t("objectives")}</h2>
-            </>
-          ) : dailyPoints > 0 && dailyTasks.length > 0 ? (
-            <IonButton size="large" shape="round" onClick={handleOnCompleteDaily}>
-              <IonLabel>{createChipText(5)}</IonLabel>
-            </IonButton>
-          ) : (
-            <>
-              <IonIcon size="large" icon={checkmarkCircleOutline} />
-              <h2>{t("no_more_daily_tasks")}</h2>
-            </>
-          )}
-        </div>
+      <div className="ion-text-center points-counter">
+        {dailyTasks.length - completedTodayTasks > 0 ? (
+          <IonTitle>{`${completedTodayTasks}/${dailyTasks.length}`}</IonTitle>
+        ) : dailyPoints > 0 && dailyTasks.length > 0 ? (
+          <IonButton size="large" shape="round" onClick={handleOnCompleteDaily}>
+            <IonLabel>{createChipText(5)}</IonLabel>
+          </IonButton>
+        ) : (
+          <>
+            <IonIcon size="large" icon={checkmarkCircle} />
+            <IonLabel>{t("no_more_daily_tasks")}</IonLabel>
+          </>
+        )}
       </div>
     </div>
   );
