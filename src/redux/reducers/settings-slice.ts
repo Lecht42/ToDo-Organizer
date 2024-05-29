@@ -11,6 +11,8 @@ export interface SettingsState {
   pointIconType: PointSymbol;
   notifications: boolean;
   notificationTime: string;
+  archiveWithoutRepeats: boolean;
+  archiveOnlyIncome: boolean;
 }
 
 const storageState: SettingsState = settingsStorage.loadState() as SettingsState;
@@ -24,6 +26,8 @@ export const settingsInitState = {
   pointIconType: DEFAULT_POINTS_SYMBOL,
   notifications: false,
   notificationTime: "00:00",
+  archiveWithoutRepeats: false,
+  archiveOnlyIncome: false,
 };
 
 const initialState: SettingsState = storageState || settingsInitState;

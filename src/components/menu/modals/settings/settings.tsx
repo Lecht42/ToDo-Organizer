@@ -16,6 +16,7 @@ import {
   IonToolbar,
   IonIcon,
   IonRange,
+  IonCheckbox,
 } from "@ionic/react";
 import { useDispatch } from "react-redux";
 import { setSettingsState } from "../../../../redux/reducers/settings-slice";
@@ -30,7 +31,7 @@ import _ from "lodash";
 import DatePickerModal from "../date-picker/date-picker";
 import moment from "moment";
 import PointsPickerModal from "../points-picker/points-picker";
-import { arrowBack } from "ionicons/icons";
+import { arrowBack, textOutline } from "ionicons/icons";
 import "./settings.css";
 
 export const SETTINGS_MODAL_TRIGGER = "open-settings-modal";
@@ -92,9 +93,9 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
           <IonTitle slot="end">{t("settings")}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
-        <IonList>
-          <IonListHeader>{t("preferences")}</IonListHeader>
+      <IonContent color="light" className="ion-padding">
+        <IonListHeader>{t("preferences")}</IonListHeader>
+        <IonList inset>
           <IonItem>
             <IonSelect
               label={t("language")}
@@ -108,38 +109,27 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
               ))}
             </IonSelect>
           </IonItem>
-          <IonItem>
-            <IonRange
-              label={t("font_size")}
-              labelPlacement="start"
-              pin
-              ticks
-              snaps
-              min={10}
-              max={30}
-              step={1}
-              value={localSettings.textSize}
-              onIonChange={(event) => handleChange("textSize", Number(event.detail.value))}
-            >
-              <IonLabel slot="start">10</IonLabel>
-              <IonLabel slot="end">30</IonLabel>
-            </IonRange>
-          </IonItem>
-          <IonItem>
-            <IonSelect
-              label={t("font_family")}
-              value={localSettings.fontFamily}
-              onIonChange={(event) => handleChange("fontFamily", event.detail.value)}
-            >
-              <IonSelectOption value="Arial">Arial</IonSelectOption>
-              <IonSelectOption value="Times New Roman">Times New Roman</IonSelectOption>
-              <IonSelectOption value="Courier New">Courier New</IonSelectOption>
-              <IonSelectOption value="Verdana">Verdana</IonSelectOption>
-            </IonSelect>
-          </IonItem>
         </IonList>
-        <IonList>
-          <IonListHeader>{t("daily_activities")}</IonListHeader>
+        <IonListHeader>{t("daily_activities")}</IonListHeader>
+        <IonList inset>
+          <IonItem>
+            <IonToggle
+              checked={localSettings.notifications}
+              onIonChange={(event) => handleChange("notifications", event.detail.checked)}
+            >
+              {t("notifications")}
+            </IonToggle>
+          </IonItem>
+          <IonItem disabled={!localSettings.notifications}>
+            <IonLabel>{t("notification_time")}</IonLabel>
+            <IonDatetimeButton datetime={notificationsTimePicker} slot="end" />
+            <DatePickerModal
+              datetime={notificationsTimePicker}
+              presentation="time"
+              value={moment(localSettings.notificationTime)}
+              onConfirm={(newDate) => handleChange("notificationTime", newDate.toISOString())}
+            />
+          </IonItem>
           <IonItem>
             <IonLabel>{t("daily_points_income")}</IonLabel>
             <IonButton id={dailyPointsPicker} fill="clear" slot="end" expand="block">
@@ -155,8 +145,8 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
             />
           </IonItem>
         </IonList>
-        <IonList>
-          <IonListHeader>{t("appearance")}</IonListHeader>
+        <IonListHeader>{t("appearance")}</IonListHeader>
+        <IonList inset>
           <IonItem>
             <IonToggle
               checked={localSettings.darkMode}
@@ -181,27 +171,49 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
               ))}
             </IonSelect>
           </IonItem>
+          <IonItem>
+            <IonSelect
+              label={t("font_family")}
+              value={localSettings.fontFamily}
+              onIonChange={(event) => handleChange("fontFamily", event.detail.value)}
+            >
+              <IonSelectOption value="Arial">Arial</IonSelectOption>
+              <IonSelectOption value="Times New Roman">Times New Roman</IonSelectOption>
+              <IonSelectOption value="Courier New">Courier New</IonSelectOption>
+              <IonSelectOption value="Verdana">Verdana</IonSelectOption>
+            </IonSelect>
+          </IonItem>
+          <IonItem>
+            <IonRange
+              pin
+              min={14}
+              max={24}
+              step={1}
+              value={localSettings.textSize}
+              onIonChange={(event) => handleChange("textSize", Number(event.detail.value))}
+            >
+              <IonIcon size="small" icon={textOutline} slot="start" />
+              <IonIcon size="large" icon={textOutline} slot="end" />
+            </IonRange>
+          </IonItem>
         </IonList>
-        <IonList>
-          <IonListHeader>{t("notifications")}</IonListHeader>
+        <IonListHeader>{t("archive_settings")}</IonListHeader>
+        <IonList inset>
           <IonItem>
             <IonToggle
-              checked={localSettings.notifications}
-              onIonChange={(event) => handleChange("notifications", event.detail.checked)}
+              checked={localSettings.archiveWithoutRepeats}
+              onIonChange={(event) => {
+                handleChange("archiveWithoutRepeats", event.detail.checked);
+                handleChange("archiveOnlyIncome", false);
+              }}
             >
-              {t("notifications")}
+              {t("only_last_entries")}
             </IonToggle>
           </IonItem>
-          <IonItem disabled={!localSettings.notifications}>
-            <IonLabel>{t("notification_time")}</IonLabel>
-            <IonDatetimeButton color="dark" datetime={notificationsTimePicker} slot="end" />
-            <DatePickerModal
-              datetime={notificationsTimePicker}
-              presentation="time"
-              presentingElement={modal.current}
-              value={moment(localSettings.notificationTime)}
-              onConfirm={(newDate) => handleChange("notificationTime", newDate.toISOString())}
-            />
+          <IonItem disabled={localSettings.archiveWithoutRepeats}>
+            <IonToggle checked={localSettings.archiveOnlyIncome} onIonChange={(event) => handleChange("archiveOnlyIncome", event.detail.checked)}>
+              {t("only_income_entries")}
+            </IonToggle>
           </IonItem>
         </IonList>
         <div className="ion-padding-vertical">

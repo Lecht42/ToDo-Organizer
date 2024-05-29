@@ -10,6 +10,8 @@ import {
   IonToolbar,
   IonTitle,
   IonDatetimeButton,
+  IonListHeader,
+  IonCheckbox,
 } from "@ionic/react";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../redux/hooks";
@@ -18,16 +20,20 @@ import _ from "lodash";
 import createChipText from "../../utils/functions/create-chip-text";
 import moment from "moment";
 import DatePickerModal from "../menu/modals/date-picker/date-picker";
+import { selectArchiveSettings } from "../../redux/selectors/settings-selectors";
 
 export const HISTORY_ID = "history";
 
 const Archive: React.FC = () => {
   const { t } = useTranslation();
   const archive = useAppSelector(selectPointsArchive);
-  const archiveGroupedByDay = _.groupBy(archive, (e) => moment(e.deadline).format("YYYY-MM-DD"));
+  const archiveSettings = useAppSelector(selectArchiveSettings);
   const [selectedDate, setSelectedDate] = useState<moment.Moment>(moment());
+  const archiveGroupedByDay = _.groupBy(archive, (e) => moment(e.deadline).format("YYYY-MM-DD"));
 
-  const filteredArchive = archiveGroupedByDay[selectedDate.format("YYYY-MM-DD")] || [];
+  let filteredArchive = _.reverse([...archiveGroupedByDay[selectedDate.format("YYYY-MM-DD")]]) || [];
+  if (archiveSettings.archiveWithoutRepeats) filteredArchive = _.uniqBy(filteredArchive, (e) => e.label);
+  if (archiveSettings.archiveOnlyIncome) filteredArchive = _.filter(filteredArchive, (e) => e.points > 0);
 
   const handleDateChange = (date: moment.Moment) => {
     setSelectedDate(date);
@@ -44,7 +50,11 @@ const Archive: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         <IonList>
-          <IonDatetimeButton slot="end" datetime={archiveDateTimePicker}></IonDatetimeButton>
+          <IonDatetimeButton
+            className="ion-margin"
+            slot="end"
+            datetime={archiveDateTimePicker}
+          ></IonDatetimeButton>
           <DatePickerModal
             max={moment().toISOString()}
             datetime={archiveDateTimePicker}

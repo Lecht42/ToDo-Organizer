@@ -44,14 +44,14 @@
 }
 
 @keyframes line-in-out {
-  0%, 100% {
+  0%,
+  100% {
     width: 0%;
   }
   50% {
     width: 100%;
   }
 }
-
 
 .completed::after {
   animation: line-in 0.3s linear forwards;
@@ -73,4 +73,32 @@ ion-modal {
 ion-modal.sub-modal::part(backdrop) {
   z-index: 10;
   --backdrop-opacity: 0.3;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: bold;
+}
+
+.damage-text {
+  animation: damageTextAnimation 1s ease-out forwards;
+}
+
+.damage-text-in {
+  animation: damageTextAnimation 1s ease-in reverse;
+}
+
+@keyframes damageTextAnimation {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0.8;
+    transform: scale(1.35);
+  }
+  100% {
+    opacity: 0.1;
+    transform: scale(0);
+  }
 }

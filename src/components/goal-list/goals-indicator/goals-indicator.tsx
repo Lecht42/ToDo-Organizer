@@ -3,7 +3,7 @@ import { Doughnut } from "react-chartjs-2";
 import { IonButton, IonIcon, IonLabel, IonTitle } from "@ionic/react";
 import { useDispatch } from "react-redux";
 import { Chart as ChartJS, ArcElement } from "chart.js";
-import { checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline } from "ionicons/icons";
+import { checkmarkCircleOutline } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../redux/hooks";
 import { completeDaily } from "../../../redux/reducers/points-slice";
@@ -14,7 +14,6 @@ import createChipText from "../../../utils/functions/create-chip-text";
 import {
   PRIMARY_COLOR,
   SECONDARY_COLOR,
-  TERTIARY_COLOR,
   getBackgroundColor,
 } from "../../../utils/functions/get-ionic-color";
 import { selectDarkMode } from "../../../redux/selectors/settings-selectors";
@@ -71,8 +70,8 @@ const GoalsIndicator = () => {
           </IonButton>
         ) : (
           <>
-            <IonIcon size="large" icon={checkmarkCircle} />
-            <IonLabel>{t("no_more_daily_tasks")}</IonLabel>
+            <IonIcon className="damage-text-in" size="large" icon={checkmarkCircleOutline} />
+            <IonLabel className="damage-text-in">{t("no_more_daily_tasks")}</IonLabel>
           </>
         )}
       </div>

@@ -24,6 +24,8 @@
   "no_record": "No records",
   "next": "Next",
   "point_icon_type": "Points icon type",
+  "font" : "Font",
+  "by_date": "By date",
   "notifications": "Notifications",
   "notification_time": "Notifications time",
   "repeat": "Repeat",

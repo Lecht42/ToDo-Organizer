@@ -36,7 +36,7 @@ const Header: React.FC = () => {
           <IonIcon icon={menu} />
         </IonButton>
         <IonTitle color="primary" className="ion-text-center">
-          {createChipText(useAppSelector(selectPoints), "", pointSymbol)}
+          <h2>{createChipText(useAppSelector(selectPoints), "", pointSymbol)}</h2>
         </IonTitle>
         <IonButton fill="clear" slot="end" color="dark" onClick={openArchiveMenu}>
           <IonIcon icon={archive} />

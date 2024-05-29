@@ -8,5 +8,11 @@ export const selectFontFamily = (state: RootState): string => state.settings.fon
 export const selectPointIconType = (state: RootState): string => state.settings.pointIconType;
 export const selectNotifications = (state: RootState): boolean => state.settings.notifications;
 export const selectNotificationTime = (state: RootState): string => state.settings.notificationTime;
+export const selectArchiveSettings = (state: RootState) => {
+  return {
+    archiveOnlyIncome: state.settings.archiveOnlyIncome,
+    archiveWithoutRepeats: state.settings.archiveWithoutRepeats,
+  };
+};
 
 export const selectSettingsState = (state: RootState): SettingsState => state.settings;

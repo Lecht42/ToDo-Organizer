@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
   IonChip,
+  IonLabel,
   IonList,
-  IonTitle,
 } from "@ionic/react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { deleteGoalList, toggleGoalCompletion } from "../../redux/reducers/goals-slice";
@@ -25,6 +25,7 @@ export interface GoalListProps extends GoalListType {
 
 const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) => {
   const pointSymbol = useAppSelector(selectPointIconType);
+  const [rewardIsGot, setRewardIsGot] = useState(false);
   const dispatch = useAppDispatch();
 
   const onGoalClickHandler = (goal: GoalType) => {
@@ -43,7 +44,8 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
         points,
       })
     );
-    dispatch(deleteGoalList(id));
+    setRewardIsGot(true);
+    setTimeout(() => dispatch(deleteGoalList(id)), 1000);
   };
 
   if (!items.length) return <></>;
@@ -52,10 +54,10 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
     <IonCard color={color || "secondary"}>
       <IonCardHeader>
         <IonCardTitle>
-          <IonTitle>{label}</IonTitle>
+          <IonLabel>{label}</IonLabel>
           {Boolean(points) && (
             <IonChip
-              className="ion-margin-horizontal"
+              className={`ion-margin-horizontal ${rewardIsGot ? "damage-text" : ""}`}
               disabled={Boolean(_.filter(items, (e) => !e.completed).length)}
               onClick={getListReward}
             >
