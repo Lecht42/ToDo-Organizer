@@ -6,14 +6,17 @@ import { selectTodayGoals, selectGoals } from "../../redux/selectors/goals-selec
 import { selectDailyPoints } from "../../redux/selectors/points-selectors";
 import { GoalListType } from "../../utils/interfaces/goals";
 import GoalList from "../../components/goal-list/goal-list";
+import { useTranslation } from "react-i18next";
 
 export const HOME_HREF = "/home";
+export const TODAY_GOAL_ID = -1;
 
 const Home: React.FC = () => {
   const dailyPoints = useAppSelector(selectDailyPoints);
+  const { t } = useTranslation();
   const todayGoals: GoalListType = {
-    id: 0,
-    label: "Today",
+    id: TODAY_GOAL_ID,
+    label: t("daily_tasks"),
     points: dailyPoints,
     items: useAppSelector(selectTodayGoals),
   };
@@ -25,9 +28,7 @@ const Home: React.FC = () => {
       <IonContent>
         <div className="ion-padding">
           <GoalsIndicator />
-          {Boolean(todayGoals.items.length) && (
-            <GoalList {...todayGoals} color="primary" id={todayGoals.id as number} />
-          )}
+          <GoalList {...todayGoals} color="tertiary" id={todayGoals.id as number} />
           {Boolean(goals.length) &&
             goals
               .filter((g) => g.id !== undefined)

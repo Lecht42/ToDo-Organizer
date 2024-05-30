@@ -26,7 +26,7 @@ export const settingsInitState = {
   pointIconType: DEFAULT_POINTS_SYMBOL,
   notifications: false,
   notificationTime: "00:00",
-  archiveWithoutRepeats: false,
+  archiveWithoutRepeats: true,
   archiveOnlyIncome: false,
 };
 

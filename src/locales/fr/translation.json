@@ -1,16 +1,3 @@
 {
-  "no_more_daily_tasks": "Aucune tâche quotidienne restante",
-  "objectives": "Objectifs",
-  "confirm": "Confirmer",
-  "none": "Aucun",
-  "day": "Jour",
-  "week": "Semaine",
-  "month": "Mois",
-  "dark_mode": "Mode Sombre",
-  "language": "Langue",
-  "text_size": "Taille du texte",
-  "text_weight": "Poids du texte",
-  "daily_points_income": "Revenu de points quotidiens",
-  "award_points_cap": "Plafond de points de récompense",
-  "award_points_step": "Pas de points de récompense"
+
 }

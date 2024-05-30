@@ -1,22 +1,3 @@
 {
-  "no_more_daily_tasks": "Завдань більше немає",
-  "objectives": "Цілі",
-  "confirm": "Підтвердити",
-  "none": "Нічого",
-  "day": "День",
-  "week": "Тиждень",
-  "month": "Місяць",
-  "date": "Дата",
-  "dark_mode": "Темний режим",
-  "language": "Мова",
-  "text_size": "Розмір тексту",
-  "text_weight": "Товщина тексту",
-  "daily_points_income": "Денний дохід",
-  "award_points_cap": "Ліміт балів",
-  "award_points_step": "Крок балів",
-  "add_new_task_group": "Додати групу",
-  "award": "Нагорода",
-  "uk": "Українська",
-  "en": "Англійська",
-  "fr": "Французька"
+
 }

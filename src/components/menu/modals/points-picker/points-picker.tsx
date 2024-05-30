@@ -1,4 +1,4 @@
-import { IonButton, IonModal, IonPicker, IonPickerColumn, IonPickerColumnOption } from "@ionic/react";
+import { IonModal, IonPicker, IonPickerColumn, IonPickerColumnOption } from "@ionic/react";
 import { useEffect, useRef, useState } from "react";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
 import _ from "lodash";

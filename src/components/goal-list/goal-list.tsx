@@ -5,8 +5,11 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonChip,
+  IonIcon,
+  IonItem,
   IonLabel,
   IonList,
+  IonTitle,
 } from "@ionic/react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { deleteGoalList, toggleGoalCompletion } from "../../redux/reducers/goals-slice";
@@ -17,6 +20,9 @@ import { GoalListType, GoalType } from "../../utils/interfaces/goals";
 import Goal from "./goal/goal";
 import { selectPointIconType } from "../../redux/selectors/settings-selectors";
 import _ from "lodash";
+import { alertCircleOutline, checkmark, checkmarkDone, removeCircle } from "ionicons/icons";
+import { useTranslation } from "react-i18next";
+import { TODAY_GOAL_ID } from "../../pages/home/home";
 
 export interface GoalListProps extends GoalListType {
   id: number;
@@ -26,6 +32,7 @@ export interface GoalListProps extends GoalListType {
 const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) => {
   const pointSymbol = useAppSelector(selectPointIconType);
   const [rewardIsGot, setRewardIsGot] = useState(false);
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const onGoalClickHandler = (goal: GoalType) => {
@@ -45,32 +52,39 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
       })
     );
     setRewardIsGot(true);
-    setTimeout(() => dispatch(deleteGoalList(id)), 1000);
+    setTimeout(() => dispatch(deleteGoalList(id)), 700);
   };
 
-  if (!items.length) return <></>;
+  const rewardIsDisabled = Boolean(_.filter(items, (e) => !e.completed).length) || !Boolean(items.length);
 
   return (
-    <IonCard color={color || "secondary"}>
+    <IonCard className={rewardIsGot ? "damage-text-out" : "damage-text-in"} color={color || "secondary"}>
       <IonCardHeader>
         <IonCardTitle>
           <IonLabel>{label}</IonLabel>
           {Boolean(points) && (
             <IonChip
-              className={`ion-margin-horizontal ${rewardIsGot ? "damage-text" : ""}`}
-              disabled={Boolean(_.filter(items, (e) => !e.completed).length)}
+              className={`ion-margin-horizontal`}
+              disabled={rewardIsDisabled}
               onClick={getListReward}
+              color="primary"
             >
-              {createChipText(points as number, "+", pointSymbol)}
+              <IonIcon color="light" icon={rewardIsDisabled ? removeCircle : checkmarkDone}/>
+              <IonLabel>{`${createChipText(points as number, "+", pointSymbol)}`}</IonLabel>
             </IonChip>
           )}
         </IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
         <IonList lines="none">
-          {_.map(items, (e, i) => (
-            <Goal {...e} onClick={onGoalClickHandler(e)} key={i} />
-          ))}
+          {items.length > 0 ? (
+            _.map(items, (e, i) => <Goal {...e} onClick={onGoalClickHandler(e)} key={i} />)
+          ) : (
+            <IonItem>
+              <IonLabel>{id === TODAY_GOAL_ID ? t("no_today_goals") : t("no_goals")}</IonLabel>
+              <IonIcon slot="end" color="primary" icon={alertCircleOutline} />
+            </IonItem>
+          )}
         </IonList>
       </IonCardContent>
     </IonCard>

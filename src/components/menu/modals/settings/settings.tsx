@@ -16,7 +16,6 @@ import {
   IonToolbar,
   IonIcon,
   IonRange,
-  IonCheckbox,
 } from "@ionic/react";
 import { useDispatch } from "react-redux";
 import { setSettingsState } from "../../../../redux/reducers/settings-slice";
@@ -32,7 +31,6 @@ import DatePickerModal from "../date-picker/date-picker";
 import moment from "moment";
 import PointsPickerModal from "../points-picker/points-picker";
 import { arrowBack, textOutline } from "ionicons/icons";
-import "./settings.css";
 
 export const SETTINGS_MODAL_TRIGGER = "open-settings-modal";
 
@@ -77,7 +75,7 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
   return (
     <IonModal
       id="settings-modal"
-      className="ion-padding settings"
+      className="ion-padding full-screen"
       trigger={SETTINGS_MODAL_TRIGGER}
       ref={modal}
       keepContentsMounted
@@ -88,9 +86,9 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
       <IonHeader>
         <IonToolbar>
           <IonButton fill="clear" slot="start" onClick={onDismiss}>
-            <IonIcon icon={arrowBack} />
+            {t("close")}
           </IonButton>
-          <IonTitle slot="end">{t("settings")}</IonTitle>
+          <IonTitle>{t("settings")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent color="light" className="ion-padding">
@@ -211,7 +209,10 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
             </IonToggle>
           </IonItem>
           <IonItem disabled={localSettings.archiveWithoutRepeats}>
-            <IonToggle checked={localSettings.archiveOnlyIncome} onIonChange={(event) => handleChange("archiveOnlyIncome", event.detail.checked)}>
+            <IonToggle
+              checked={localSettings.archiveOnlyIncome}
+              onIonChange={(event) => handleChange("archiveOnlyIncome", event.detail.checked)}
+            >
               {t("only_income_entries")}
             </IonToggle>
           </IonItem>

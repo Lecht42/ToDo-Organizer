@@ -1,0 +1,21 @@
+.archive-table-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+}
+
+.archive-table-label {
+  grid-column: 1;
+}
+
+.archive-table-date {
+  grid-column: 2;
+}
+
+.archive-table-chip {
+  grid-column: 3;
+}
+
+.search-toolbar::part(native) {
+    --min-height: 94px;
+}

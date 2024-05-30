@@ -1,7 +1,6 @@
-import { IonButton, IonModal, IonPicker, IonPickerColumn, IonPickerColumnOption } from "@ionic/react";
+import { IonModal, IonPicker, IonPickerColumn, IonPickerColumnOption } from "@ionic/react";
 import { useRef, useState, useEffect } from "react";
 import MomentRecurrenceOption from "../../../../utils/enums/moment-recurrence-option";
-import { useTranslation } from "react-i18next";
 import IPeriod from "../../../../utils/interfaces/period";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
 import { t } from "i18next";

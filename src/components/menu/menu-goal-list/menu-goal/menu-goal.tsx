@@ -35,7 +35,7 @@ const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, points, attachedListId,
     <>
       <IonItemSliding>
         <IonItem>
-          <IonLabel className={completed ? "completed" : "not-completed"}>{label}</IonLabel>
+          <IonLabel className={completed ? "completed" : ""}>{label}</IonLabel>
           <IonLabel slot="end" color="medium">
             <h3>{moment(deadline).format("MMM Do YY")}</h3>
           </IonLabel>
@@ -46,7 +46,7 @@ const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, points, attachedListId,
           </IonItemOption>
         </IonItemOptions>
         <IonItemOptions side="end">
-          <IonItemOption color="success" onClick={handleEdit}>
+          <IonItemOption color="primary" onClick={handleEdit}>
             <IonIcon icon={pencil} />
           </IonItemOption>
         </IonItemOptions>

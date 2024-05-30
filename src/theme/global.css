@@ -1,22 +1,3 @@
-.completed,
-.not-completed {
-  display: inline-block;
-  position: relative;
-}
-
-.completed::after,
-.not-completed::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 2px;
-  background-color: var(--ion-text-color);
-  top: 50%;
-  left: 0;
-  z-index: 1;
-  opacity: 1;
-}
-
 @keyframes line-in {
   from {
     width: 0%;
@@ -53,6 +34,55 @@
   }
 }
 
+@keyframes damageTextAnimationIn {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  25% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes damageTextAnimationOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  25% {
+    opacity: 0.8;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+.completed,
+.not-completed {
+  display: inline-block;
+  position: relative;
+}
+
+.completed::after,
+.not-completed::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  background-color: var(--ion-text-color);
+  top: 50%;
+  left: 0;
+  z-index: 1;
+  opacity: 1;
+}
+
 .completed::after {
   animation: line-in 0.3s linear forwards;
 }
@@ -75,30 +105,27 @@ ion-modal.sub-modal::part(backdrop) {
   --backdrop-opacity: 0.3;
 }
 
+ion-title,
 h1,
 h2,
 h3 {
   font-weight: bold;
 }
 
-.damage-text {
-  animation: damageTextAnimation 1s ease-out forwards;
-}
-
 .damage-text-in {
-  animation: damageTextAnimation 1s ease-in reverse;
+  animation: damageTextAnimationIn 0.7s ease-in forwards;
 }
 
-@keyframes damageTextAnimation {
-  0% {
-    opacity: 1;
-  }
-  25% {
-    opacity: 0.8;
-    transform: scale(1.35);
-  }
-  100% {
-    opacity: 0.1;
-    transform: scale(0);
-  }
+.damage-text-out {
+  animation: damageTextAnimationOut 0.7s ease-out forwards;
+}
+
+ion-datetime-button::part(native) {
+  color: var(--ion-color-secondary-contrast);
+}
+
+ion-modal.full-screen {
+  --height: 100%;
+  padding: 0;
+  --border-radius: 0;
 }

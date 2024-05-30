@@ -1,3 +1,8 @@
-ion-title {
-    font-weight: bold;
+div.countup-container {
+    font-size: 1.75rem;
+}
+
+div.countup-container::after {
+  content: attr(data-pointsymbol);
+  margin-left: 4px;
 }

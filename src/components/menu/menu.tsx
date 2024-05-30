@@ -43,15 +43,14 @@ const Menu: React.FC = () => {
           .map((goal) => (
             <MenuGoalList {...goal} id={goal.id as number} key={goal.id as number} />
           ))}
-        <IonButton id={CREATE_TASK_LIST_MODAL_ID} fill="clear" className="ion-margin">
-          <IonIcon icon={add} />
+        <IonButton id={CREATE_TASK_LIST_MODAL_ID} fill="outline" className="ion-margin">
           <IonLabel slot="end">{t("add_new_task_group")}</IonLabel>
         </IonButton>
       </IonContent>
       <IonFooter>
         <IonItem>
           <GoogleLogin auto_select onSuccess={handleOnLogin} onError={handleOnFailedLogin} />
-          <IonButton expand="block" slot="end" onClick={() => setIsSettingsOpen(true)} fill="clear">
+          <IonButton color="dark" expand="block" slot="end" onClick={() => setIsSettingsOpen(true)} fill="clear">
             <IonIcon icon={settingsOutline} />
           </IonButton>
         </IonItem>

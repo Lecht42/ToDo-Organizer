@@ -6,6 +6,9 @@ import { GoalListType } from "../../../../utils/interfaces/goals";
 import PointsPickerModal, { AWARD_PICKER_MODAL_TRIGGER } from "../points-picker/points-picker";
 import { useTranslation } from "react-i18next";
 import ConfirmButton from "../../../buttons/confirm-button/confirm-button";
+
+export const MAX_LABEL_LENGTH = 18;
+
 const initialGoalListState: GoalListType = {
   label: "",
   points: 10,
@@ -55,7 +58,7 @@ const CreateTaskListModal: React.FC<CreateTaskListModalProps> = ({ trigger }) =>
         <IonInput
           placeholder="Type here..."
           value={formData.label}
-          maxlength={18}
+          maxlength={MAX_LABEL_LENGTH}
           onIonInput={(event) => handleOnConfirmSubmodal(event.detail.value as string)}
           ref={inputRef}
         />

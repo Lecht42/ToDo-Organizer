@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Archive from "./components/archive/archive";
+import ArchiveModal from "./components/menu/modals/archive/archive";
 import Header from "./components/header/header";
 import Menu from "./components/menu/menu";
 import Home from "./pages/home/home";
@@ -43,7 +43,7 @@ const ProviderDiv: React.FC = () => {
       <Header />
       <Home />
       <Menu />
-      <Archive />
+      <ArchiveModal />
     </>
   );
 };
