@@ -8,7 +8,6 @@ import { GoalListType } from "../../utils/interfaces/goals";
 import GoalList from "../../components/goal-list/goal-list";
 import { useTranslation } from "react-i18next";
 
-export const HOME_HREF = "/home";
 export const TODAY_GOAL_ID = -1;
 
 const Home: React.FC = () => {

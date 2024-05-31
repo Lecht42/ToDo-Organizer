@@ -9,7 +9,6 @@ import {
   IonItem,
   IonLabel,
   IonList,
-  IonTitle,
 } from "@ionic/react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { deleteGoalList, toggleGoalCompletion } from "../../redux/reducers/goals-slice";
@@ -20,7 +19,7 @@ import { GoalListType, GoalType } from "../../utils/interfaces/goals";
 import Goal from "./goal/goal";
 import { selectPointIconType } from "../../redux/selectors/settings-selectors";
 import _ from "lodash";
-import { alertCircleOutline, checkmark, checkmarkDone, removeCircle } from "ionicons/icons";
+import { alertCircleOutline, checkmarkDone, removeCircle } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { TODAY_GOAL_ID } from "../../pages/home/home";
 
@@ -37,7 +36,9 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
 
   const onGoalClickHandler = (goal: GoalType) => {
     return () => {
-      dispatch(toggleGoalCompletion({ listId: goal.attachedListId || id, id: goal.id as number }));
+      const listId = goal.attachedListId || id;
+      const goalId = goal.id as number;
+      dispatch(toggleGoalCompletion({ listId, id: goalId }));
       dispatch(completeGoal(goal));
     };
   };
@@ -64,12 +65,12 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
           <IonLabel>{label}</IonLabel>
           {Boolean(points) && (
             <IonChip
-              className={`ion-margin-horizontal`}
+              className={`ion-margin-horizontal ${!rewardIsDisabled ? "damage-text-in" : "damage-text-out"}`}
               disabled={rewardIsDisabled}
               onClick={getListReward}
               color="primary"
             >
-              <IonIcon color="light" icon={rewardIsDisabled ? removeCircle : checkmarkDone}/>
+              <IonIcon color="light" icon={rewardIsDisabled ? removeCircle : checkmarkDone} />
               <IonLabel>{`${createChipText(points as number, "+", pointSymbol)}`}</IonLabel>
             </IonChip>
           )}
@@ -78,7 +79,7 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
       <IonCardContent>
         <IonList lines="none">
           {items.length > 0 ? (
-            _.map(items, (e, i) => <Goal {...e} onClick={onGoalClickHandler(e)} key={i} />)
+            _.map(items, (e, i) => <Goal {...e} attachedListId={id} onClick={onGoalClickHandler(e)} key={i} />)
           ) : (
             <IonItem>
               <IonLabel>{id === TODAY_GOAL_ID ? t("no_today_goals") : t("no_goals")}</IonLabel>

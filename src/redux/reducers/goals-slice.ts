@@ -59,27 +59,29 @@ const goalsSlice = createSlice({
     toggleGoalCompletion: (state, action: PayloadAction<{ listId: number; id: number }>) => {
       const { listId, id } = action.payload;
       const list = _.find(state.goalLists, { id: listId });
+    
       if (list) {
         const item = _.find(list.items, { id });
+    
         if (item) {
-          item.completed = !item.completed;
-          if (item.completed && item.period) {
-            const newDeadline = moment(item.deadline)
-              .add(item.period.value, item.period.type as moment.unitOfTime.DurationConstructor)
-              .toISOString();
-            const repeatedListName = `${list.label} ${t("repeat")}`;
-            const repeatList = _.find(state.goalLists, { label: repeatedListName });
-
-            const newGoal = { ...item, id: Date.now(), deadline: newDeadline, completed: false };
-
-            if (!repeatList) {
-              state.goalLists.push({ id: Date.now(), label: repeatedListName, items: [newGoal] });
-            } else {
-              repeatList.items.push(newGoal);
-            }
-
-            _.remove(list.items, { id });
+          if (item.period) {
+            const newDeadline = moment(item.deadline).add(item.period.value, item.period.type);
+            item.deadline = newDeadline.toISOString();
           }
+    
+          item.completed = !item.completed;
+        }
+      }
+    },
+    disableCompletion: (state, action: PayloadAction<{ listId: number; id: number }>) => {
+      const { listId, id } = action.payload;
+      const list = _.find(state.goalLists, { id: listId });
+    
+      if (list) {
+        const item = _.find(list.items, { id });
+    
+        if (item) {
+          item.completed = false;
         }
       }
     },
@@ -105,6 +107,7 @@ export const {
   toggleGoalCompletion,
   setGoalsState,
   reorderGoals,
+  disableCompletion
 } = goalsSlice.actions;
 
 export default goalsSlice.reducer;

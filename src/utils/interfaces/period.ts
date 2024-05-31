@@ -1,7 +1,5 @@
-import MomentRecurrenceOption from "../enums/moment-recurrence-option";
-
 interface IPeriod {
-    type: MomentRecurrenceOption;
+    type: moment.unitOfTime.DurationConstructor;
     value: number;
 }
 

@@ -30,7 +30,7 @@ import _ from "lodash";
 import DatePickerModal from "../date-picker/date-picker";
 import moment from "moment";
 import PointsPickerModal from "../points-picker/points-picker";
-import { arrowBack, textOutline } from "ionicons/icons";
+import { textOutline } from "ionicons/icons";
 
 export const SETTINGS_MODAL_TRIGGER = "open-settings-modal";
 
@@ -85,10 +85,10 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
     >
       <IonHeader>
         <IonToolbar>
-          <IonButton fill="clear" slot="start" onClick={onDismiss}>
+          <IonButton size="small" fill="clear" slot="start" onClick={onDismiss}>
             {t("close")}
           </IonButton>
-          <IonTitle>{t("settings")}</IonTitle>
+          <IonTitle slot="end">{t("settings")}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent color="light" className="ion-padding">

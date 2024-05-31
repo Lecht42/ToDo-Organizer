@@ -79,7 +79,7 @@ const ArchiveModal: React.FC<ArchiveModalProps> = ({ isOpen, onClose }) => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>{t("archive")}</IonTitle>
-          <IonButton fill="clear" slot="end" onClick={onClose}>
+          <IonButton size="small" fill="clear" slot="end" onClick={onClose}>
             {t("close")}
           </IonButton>
         </IonToolbar>
