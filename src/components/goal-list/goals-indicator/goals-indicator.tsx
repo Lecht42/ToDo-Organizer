@@ -11,13 +11,10 @@ import { selectTodayGoals } from "../../../redux/selectors/goals-selectors";
 import { selectDailyPoints } from "../../../redux/selectors/points-selectors";
 import backgroundUnderPlugin from "../../../utils/chart-plugins/background-under-plugin";
 import createChipText from "../../../utils/functions/create-chip-text";
-import {
-  PRIMARY_COLOR,
-  SECONDARY_COLOR,
-  getBackgroundColor,
-} from "../../../utils/functions/get-ionic-color";
+import { PRIMARY_COLOR, SECONDARY_COLOR, getBackgroundColor } from "../../../utils/functions/get-ionic-color";
 import { selectDarkMode } from "../../../redux/selectors/settings-selectors";
 import { useEffect, useState } from "react";
+import Color from "color";
 
 ChartJS.register(ArcElement, backgroundUnderPlugin);
 
@@ -58,20 +55,30 @@ const GoalsIndicator = () => {
     dispatch(completeDaily());
   };
 
+  const counterColor = Color(PRIMARY_COLOR).object();
+
   return (
     <div className="chart-container">
       <Doughnut data={data} width="100%" height="100%" options={options as any} />
-      <div className="ion-text-center points-counter">
+      <div className="ion-text-center goals-counter">
         {dailyTasks.length - completedTodayTasks > 0 ? (
-          <IonTitle>{`${completedTodayTasks}/${dailyTasks.length}`}</IonTitle>
+          <IonTitle
+            style={{ color: counterColor }}
+          >{`${completedTodayTasks}/${dailyTasks.length}`}</IonTitle>
         ) : dailyPoints > 0 && dailyTasks.length > 0 ? (
-          <IonButton size="large" shape="round" onClick={handleOnCompleteDaily}>
-            <IonLabel>{createChipText(5)}</IonLabel>
+          <IonButton
+            className="element-in"
+            color="success"
+            size="large"
+            shape="round"
+            onClick={handleOnCompleteDaily}
+          >
+            <IonLabel>{createChipText(dailyPoints)}</IonLabel>
           </IonButton>
         ) : (
           <>
-            <IonIcon className="damage-text-in" size="large" icon={checkmarkCircleOutline} />
-            <IonLabel className="damage-text-in">{t("no_more_daily_tasks")}</IonLabel>
+            <IonIcon color="success" className="element-in" size="large" icon={checkmarkCircleOutline} />
+            <IonLabel color="success">{t("no_more_daily_tasks")}</IonLabel>
           </>
         )}
       </div>

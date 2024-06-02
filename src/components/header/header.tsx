@@ -38,9 +38,7 @@ const Header: React.FC = () => {
           <IonIcon icon={menu} />
         </IonButton>
         <IonTitle color="primary" className="ion-text-center">
-          <div className="countup-container">
-            <CountUp start={prevPoints} end={points} duration={1} />
-          </div>
+          <CountUp className="countup-container" start={prevPoints} end={points} duration={1} />
         </IonTitle>
         <IonButton onClick={() => setIsArchiveOpen(true)} fill="clear" slot="end" color="dark">
           <IonIcon icon={archive} />

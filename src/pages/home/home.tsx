@@ -27,7 +27,7 @@ const Home: React.FC = () => {
       <IonContent>
         <div className="ion-padding">
           <GoalsIndicator />
-          <GoalList {...todayGoals} color="tertiary" id={todayGoals.id as number} />
+          <GoalList {...todayGoals} color="primary" id={todayGoals.id as number} />
           {Boolean(goals.length) &&
             goals
               .filter((g) => g.id !== undefined)

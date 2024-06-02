@@ -15,7 +15,7 @@ export interface PutUserBody {
 class UserApi {
   static async getUserState(id?: string): Promise<{ data?: PutUserBody; error?: string }> {
     try {
-      if(!id) throw new Error("Request ID is not undefined");
+      if (!id) throw new Error("Request ID is not undefined");
 
       const res = await fetch(`${URL}${id}`);
 
@@ -31,7 +31,7 @@ class UserApi {
 
   static async putUserState(body?: PutUserBody): Promise<{ data?: PutUserBody; error?: string }> {
     try {
-      if(!body) throw new Error("Request body is not undefined");
+      if(!body?.id) throw new Error("Request body id is undefined");
 
       const res = await fetch(`${URL}${body.id}`, {
         method: "PUT",

@@ -6,20 +6,30 @@ import {
   IonItemOptions,
   IonItemOption,
   IonIcon,
-  IonModal
+  IonModal,
 } from "@ionic/react";
-import { pencil, trash } from "ionicons/icons";
+import { pencil, timer, trash } from "ionicons/icons";
 import { GoalType } from "../../../../utils/interfaces/goals";
 import moment from "moment";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { deleteGoal } from "../../../../redux/reducers/goals-slice";
 import CreateTaskModal from "../../modals/create-task/create-task";
+import isSameDay from "../../../../utils/functions/is-same-day";
 
 interface MenuGoalProps extends GoalType {
   listId: number;
 }
 
-const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, points, attachedListId, label, completed, deadline }) => {
+const MenuGoal: React.FC<MenuGoalProps> = ({
+  id,
+  listId,
+  points,
+  attachedListId,
+  label,
+  completed,
+  deadline,
+  period
+}) => {
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -38,15 +48,21 @@ const MenuGoal: React.FC<MenuGoalProps> = ({ id, listId, points, attachedListId,
           <IonLabel className={completed ? "completed" : ""}>{label}</IonLabel>
           <IonLabel slot="end" color="medium">
             <h3>{moment(deadline).format("MMM Do YY")}</h3>
-          </IonLabel>
+          </IonLabel>          
+          {Boolean(period) && (
+            <IonIcon
+              slot="end"
+              className="ion-no-margin"
+              icon={timer}
+              color={isSameDay(deadline) ? "primary" : "medium"}
+            />
+          )}
         </IonItem>
         <IonItemOptions side="start">
-          <IonItemOption color="danger" onClick={handleDelete}>
+          <IonItemOption color="primary" onClick={handleDelete}>
             <IonIcon icon={trash} />
           </IonItemOption>
-        </IonItemOptions>
-        <IonItemOptions side="end">
-          <IonItemOption color="primary" onClick={handleEdit}>
+          <IonItemOption color="secondary" onClick={handleEdit}>
             <IonIcon icon={pencil} />
           </IonItemOption>
         </IonItemOptions>

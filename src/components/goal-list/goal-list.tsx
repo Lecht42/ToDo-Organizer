@@ -7,6 +7,8 @@ import {
   IonChip,
   IonIcon,
   IonItem,
+  IonItemOption,
+  IonItemOptions,
   IonLabel,
   IonList,
 } from "@ionic/react";
@@ -19,7 +21,7 @@ import { GoalListType, GoalType } from "../../utils/interfaces/goals";
 import Goal from "./goal/goal";
 import { selectPointIconType } from "../../redux/selectors/settings-selectors";
 import _ from "lodash";
-import { alertCircleOutline, checkmarkDone, removeCircle } from "ionicons/icons";
+import { alertCircleOutline, checkmarkDone, pencil, removeCircle, trash } from "ionicons/icons";
 import { useTranslation } from "react-i18next";
 import { TODAY_GOAL_ID } from "../../pages/home/home";
 
@@ -59,13 +61,13 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
   const rewardIsDisabled = Boolean(_.filter(items, (e) => !e.completed).length) || !Boolean(items.length);
 
   return (
-    <IonCard className={rewardIsGot ? "damage-text-out" : "damage-text-in"} color={color || "secondary"}>
+    <IonCard className={rewardIsGot ? "element-out" : "element-in"} color={color || "secondary"}>
       <IonCardHeader>
         <IonCardTitle>
           <IonLabel>{label}</IonLabel>
-          {Boolean(points) && (
+          {Boolean(points) && id !== TODAY_GOAL_ID && (
             <IonChip
-              className={`ion-margin-horizontal ${!rewardIsDisabled ? "damage-text-in" : "damage-text-out"}`}
+              className={`ion-margin-horizontal ${!rewardIsDisabled ? "element-in" : "element-out"}`}
               disabled={rewardIsDisabled}
               onClick={getListReward}
               color="primary"
@@ -79,7 +81,9 @@ const GoalList: React.FC<GoalListProps> = ({ id, label, items, color, points }) 
       <IonCardContent>
         <IonList lines="none">
           {items.length > 0 ? (
-            _.map(items, (e, i) => <Goal {...e} attachedListId={id} onClick={onGoalClickHandler(e)} key={i} />)
+            _.map(items, (e, i) => (
+              <Goal {...e} attachedListId={id} onClick={onGoalClickHandler(e)} key={i} />
+            ))
           ) : (
             <IonItem>
               <IonLabel>{id === TODAY_GOAL_ID ? t("no_today_goals") : t("no_goals")}</IonLabel>

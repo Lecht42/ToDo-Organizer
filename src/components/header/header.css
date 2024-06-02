@@ -1,8 +1,9 @@
-div.countup-container {
-    font-size: 1.75rem;
+.countup-container {
+  font-size: 1.75rem;
 }
 
-div.countup-container::after {
+.countup-container::after {
+  position: absolute;
   content: attr(data-pointsymbol);
-  margin-left: 4px;
+  font-size: 1.5rem;
 }

@@ -90,11 +90,11 @@ h3 {
   font-weight: bold;
 }
 
-.damage-text-in {
+.element-in {
   animation: damageTextAnimationIn 0.7s ease-in forwards;
 }
 
-.damage-text-out {
+.element-out {
   animation: damageTextAnimationOut 0.7s ease-out forwards;
 }
 

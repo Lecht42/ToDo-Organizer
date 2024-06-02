@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
-import ArchiveModal from "./components/menu/modals/archive/archive";
 import Header from "./components/header/header";
 import Menu from "./components/menu/menu";
 import Home from "./pages/home/home";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { selectGoalsState } from "./redux/selectors/goals-selectors";
-import { selectSettingsState } from "./redux/selectors/settings-selectors";
+import { selectDailyPointsIncome, selectSettingsState } from "./redux/selectors/settings-selectors";
 import { selectAuthState } from "./redux/selectors/auth-selectors";
 import { tryFetchUserState, tryPutUserState } from "./redux/sagas/user/user-actions";
-import { selectPointsState } from "./redux/selectors/points-selectors";
+import { selectDailyPoints, selectLastGetPoints, selectPointsState } from "./redux/selectors/points-selectors";
 import _ from "lodash";
-import toggleDarkPalette from "./utils/functions/toggle-dark-palette";
+import isSameDay from "./utils/functions/is-same-day";
+import { setDailyPoints } from "./redux/reducers/points-slice";
 
 const ProviderDiv: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -19,11 +19,17 @@ const ProviderDiv: React.FC = () => {
   const settings = useAppSelector(selectSettingsState);
   const points = useAppSelector(selectPointsState);
   const auth = useAppSelector(selectAuthState);
+  const dailyPointIncome = useAppSelector(selectDailyPointsIncome);
+  const dailyPointsGettingDate = useAppSelector(selectLastGetPoints);
+
 
   useEffect(() => {
-    if (auth.googleAuth?.clientId) {
-      dispatch(tryFetchUserState(auth.googleAuth.clientId));
-    }      
+    if (!isSameDay(dailyPointsGettingDate))
+      dispatch(setDailyPoints(dailyPointIncome))
+  }, []);
+
+  useEffect(() => {
+    dispatch(tryFetchUserState(auth.googleAuth?.clientId));
   }, [dispatch, auth.googleAuth?.clientId]);
 
   useEffect(() => {
@@ -43,7 +49,6 @@ const ProviderDiv: React.FC = () => {
       <Header />
       <Home />
       <Menu />
-      <ArchiveModal />
     </>
   );
 };

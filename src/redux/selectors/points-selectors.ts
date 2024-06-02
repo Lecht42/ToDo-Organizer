@@ -5,5 +5,6 @@ import { RootState } from "../store";
 export const selectPoints = (state: RootState): number => state.points.points;
 export const selectDailyPoints = (state: RootState): number => state.points.dailyPoints;
 export const selectPointsArchive = (state: RootState): PointsDeltaEntry[] => state.points.log;
+export const selectLastGetPoints = (state: RootState): string => state.points.lastGetDailyPointsDate;
 
 export const selectPointsState = (state: RootState): PointsState => state.points;

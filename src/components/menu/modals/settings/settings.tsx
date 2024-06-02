@@ -31,6 +31,7 @@ import DatePickerModal from "../date-picker/date-picker";
 import moment from "moment";
 import PointsPickerModal from "../points-picker/points-picker";
 import { textOutline } from "ionicons/icons";
+import getFonts from "../../../../utils/functions/get-fonts";
 
 export const SETTINGS_MODAL_TRIGGER = "open-settings-modal";
 
@@ -70,6 +71,11 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
     }));
   };
 
+  const handleClose = () => {
+    setLocalSettings(settings);
+    onDismiss();
+  };
+
   const dailyPointsPicker = "open-daily-points-picker";
 
   return (
@@ -81,7 +87,7 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
       keepContentsMounted
       showBackdrop={false}
       isOpen={isOpen}
-      onDidDismiss={onDismiss}
+      onDidDismiss={handleClose}
     >
       <IonHeader>
         <IonToolbar>
@@ -175,10 +181,9 @@ const SettingsModal: React.FC<SettingsProps> = ({ isOpen, onDismiss }) => {
               value={localSettings.fontFamily}
               onIonChange={(event) => handleChange("fontFamily", event.detail.value)}
             >
-              <IonSelectOption value="Arial">Arial</IonSelectOption>
-              <IonSelectOption value="Times New Roman">Times New Roman</IonSelectOption>
-              <IonSelectOption value="Courier New">Courier New</IonSelectOption>
-              <IonSelectOption value="Verdana">Verdana</IonSelectOption>
+              {_.map(getFonts(), (e, i) => (
+                <IonSelectOption value={e} key={i}>{e}</IonSelectOption>
+              ))}
             </IonSelect>
           </IonItem>
           <IonItem>

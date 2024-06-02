@@ -26,7 +26,7 @@ const Menu: React.FC = () => {
   const handleOnLogin = (response: GoogleCredentialResponse) => {
     if (userId) {
       dispatch(setGoogleAuth({ credential: response.credential as string, clientId: response.clientId as string }));
-      dispatch({ type: tryFetchUserState.type, payload: response.clientId as string });
+      dispatch({ type: tryFetchUserState.type, payload: response.clientId});
     }
   };
 

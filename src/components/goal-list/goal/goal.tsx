@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 import { disableCompletion } from "../../../redux/reducers/goals-slice";
 import id from "../../../credentials/google-client-id";
+import isSameDay from "../../../utils/functions/is-same-day";
 
 interface GoalProps extends GoalType {
   onClick: () => void;
@@ -40,10 +41,10 @@ const Goal: React.FC<GoalProps> = ({
     }
   }, [rewardIsGot]);
 
-  const isSameDay = moment(deadline).isSame(new Date(), "day");
+  const _isSameDay = isSameDay(deadline);
 
   useEffect(() => {
-    if (!isSameDay && completed)
+    if (!_isSameDay && Boolean(period) && completed)
       dispatch(disableCompletion({ listId: attachedListId as number, id: id as number }));
   }, []);
 
@@ -52,14 +53,16 @@ const Goal: React.FC<GoalProps> = ({
     onClick();
   };
 
+  const disabled = !_isSameDay && !moment(deadline).isBefore(deadline, "day") && Boolean(period);
+
   return (
-    <IonItem className="damage-text-in" button disabled={!isSameDay} onClick={onComplete} detail={false}>
-      <IonCheckbox checked={completed} labelPlacement="end" justify="start">
+    <IonItem button disabled={disabled} onClick={onComplete} detail={false}>
+      <IonCheckbox slot="start" checked={completed} labelPlacement="end" justify="start">
         <IonLabel className={completed ? "completed" : "not-completed"}>{label}</IonLabel>
       </IonCheckbox>
-      {period && <IonIcon className="ion-no-margin" icon={timer} color={isSameDay ? "primary" : "medium"} />}
+      {period && <IonIcon className="ion-no-margin" icon={timer} color={_isSameDay ? "primary" : "medium"} />}
       {showChip && (
-        <IonChip className={rewardIsGot ? "damage-text-in" : "damage-text-out"} slot="end" color="primary">
+        <IonChip className={rewardIsGot ? "element-in" : "element-out"} slot="end" color="primary">
           {createChipText(points, undefined, pointSymbol)}
         </IonChip>
       )}
